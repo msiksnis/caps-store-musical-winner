@@ -1,34 +1,67 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLoaderData } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { SearchIcon } from "lucide-react";
 
 import ProductCard from "../components/ProductCard";
 import { Product } from "../lib/types";
 import Loader from "../components/Loader";
 import { fetchProducts } from "../api";
 import { cn } from "../lib/utils";
-import { SearchIcon } from "lucide-react";
 import GradualSpacing from "./GradualSpacing";
-import BlurInText from "./BlurInText";
+import { Route } from "../routes";
+import ErrorLoadingButton from "./ErrorLoadingButton";
 
 export default function AllProducts() {
-  //   const loaderData = useLoaderData({ from: "/" }) as Product[];
+  const navigate = useNavigate();
+
+  const search = Route.useSearch(); // Gets the validated search params
+  const filter = search.filter || "all"; // Default to "all" if not provided
 
   const {
     data: products,
     isLoading,
     error,
+    refetch,
   } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
-    // initialData: loaderData,
+    queryKey: ["products", { filter }],
+    queryFn: () => fetchProducts(filter),
   });
 
   if (isLoading) return <Loader />;
-  if (error) return <div>Error loading products.</div>;
+  if (!products.length) {
+    return (
+      <div className="mt-32 flex flex-col items-center justify-center">
+        No products found.
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <ErrorLoadingButton
+        errorMessage="Error loading products. Please try again later."
+        onRetry={refetch}
+      />
+    );
+  }
 
-  // Only for visual purpose. Later 'isActive' will be used when filtering products
-  const isActive = true;
+  // Updates the filter in the URL
+  const handleFilterChange = (newFilter: "all" | "top-rated" | "sale") => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        filter: newFilter,
+      }),
+    });
+  };
+
+  // Filters the products client-side based on the selected filter
+  const filteredProducts = products.filter((product: Product) => {
+    if (filter === "all") return true;
+    if (filter === "top-rated") return product.rating >= 4.5;
+    if (filter === "sale") return product.price > product.discountedPrice;
+    return true;
+  });
 
   const blurInVariants = {
     hidden: { filter: "blur(3px)", opacity: 0 },
@@ -42,10 +75,15 @@ export default function AllProducts() {
           text="Cap's Store"
           className="text-primary text-5xl font-medium tracking-[-0.1em] sm:text-[3.5rem] md:text-[4rem] md:leading-[5rem]"
         />
-        <BlurInText
-          text="Check out our full collection of products tailored to your needs"
+        <motion.h2
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.5, delay: 0.1 }}
+          variants={blurInVariants}
           className="text-muted-foreground text-pretty py-4 text-xl font-light"
-        />
+        >
+          Check out our full collection of products tailored to your needs
+        </motion.h2>
       </div>
       {/* Filtering buttons */}
       <motion.div
@@ -57,16 +95,39 @@ export default function AllProducts() {
       >
         <div className="flex gap-2 md:gap-4 xl:gap-6">
           <button
-            className={cn("text-foreground/70 rounded-full border px-6 py-2", {
-              "bg-primary border-primary text-white": isActive,
-            })}
+            className={cn(
+              "text-foreground/70 hover:bg-muted rounded-full border px-6 py-2 shadow-sm transition-all duration-200",
+              {
+                "bg-primary border-primary hover:bg-primary text-white shadow-md":
+                  filter === "all",
+              },
+            )}
+            onClick={() => handleFilterChange("all")}
           >
             All Products
           </button>
-          <button className="text-foreground/70 rounded-full border px-6 py-2">
+          <button
+            className={cn(
+              "text-foreground/70 hover:bg-muted rounded-full border px-6 py-2 shadow-sm transition-all duration-200",
+              {
+                "bg-primary border-primary hover:bg-primary text-white shadow-md":
+                  filter === "top-rated",
+              },
+            )}
+            onClick={() => handleFilterChange("top-rated")}
+          >
             Top Rated
           </button>
-          <button className="text-foreground/70 rounded-full border px-6 py-2">
+          <button
+            className={cn(
+              "text-foreground/70 hover:bg-muted rounded-full border px-6 py-2 shadow-sm transition-all duration-200",
+              {
+                "bg-primary border-primary hover:bg-primary text-white shadow-md":
+                  filter === "sale",
+              },
+            )}
+            onClick={() => handleFilterChange("sale")}
+          >
             Sale
           </button>
         </div>
@@ -89,7 +150,7 @@ export default function AllProducts() {
         variants={blurInVariants}
         className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4 md:gap-6 xl:grid-cols-3 xl:gap-8"
       >
-        {products.map((product: Product) => (
+        {filteredProducts.map((product: Product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </motion.div>

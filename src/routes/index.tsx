@@ -1,7 +1,13 @@
+import { z } from "zod";
 import { createFileRoute } from "@tanstack/react-router";
 import AllProducts from "../components/AllProducts";
 
+const productSearchSchema = z.object({
+  filter: z.enum(["all", "top-rated", "sale"]).catch("all"),
+});
+
 export const Route = createFileRoute("/")({
+  validateSearch: productSearchSchema.parse.bind(productSearchSchema), // Use Zod for validation
   component: AllProducts,
 });
 
