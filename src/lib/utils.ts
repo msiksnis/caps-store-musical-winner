@@ -13,3 +13,10 @@ export function calculateDiscountPercentage(
   const discount = ((originalPrice - discountedPrice) / originalPrice) * 100;
   return Math.round(discount);
 }
+
+export const blurInVariants = {
+  hidden: { filter: "blur(3px)", opacity: 0 },
+  visible: { filter: "blur(0px)", opacity: 1 },
+};
+
+export const FILTER_OPTIONS = ["all-products", "top-rated", "sale"] as const;

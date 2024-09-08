@@ -1,5 +1,7 @@
 // src/lib/types.ts
 
+import { FILTER_OPTIONS } from "./utils";
+
 export interface Review {
   id: string;
   username: string;
@@ -26,3 +28,5 @@ export interface CartItem {
   product: Product;
   quantity: number;
 }
+
+export type FilterOption = (typeof FILTER_OPTIONS)[number];

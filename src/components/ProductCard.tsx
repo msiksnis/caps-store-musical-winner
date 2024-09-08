@@ -36,10 +36,10 @@ export default function ProductCard({ product }: ProductCardProps) {
               className=""
             />
             <div className="absolute right-1/2 top-12 translate-x-1/2 -rotate-6 text-white">
-              <p className="flex whitespace-nowrap text-3xl">
+              <div className="flex whitespace-nowrap text-3xl">
                 <NumberTicker value={discountPercentage} />
                 <p> %</p>
-              </p>
+              </div>
             </div>
           </div>
         </div>
