@@ -4,11 +4,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FILTER_OPTIONS } from "../lib/utils";
 import Home from "../components/homepage/Home";
 
-const productSearchSchema = z.object({
-  filter: z.enum(FILTER_OPTIONS).default("all-products"),
+const productFilterSchema = z.object({
+  filter: z.enum(FILTER_OPTIONS).optional(),
+  query: z.string().optional(),
 });
 
 export const Route = createFileRoute("/")({
-  validateSearch: productSearchSchema.parse.bind(productSearchSchema),
+  validateSearch: productFilterSchema.parse.bind(productFilterSchema),
   component: Home,
 });

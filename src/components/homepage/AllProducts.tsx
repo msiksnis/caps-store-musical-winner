@@ -15,24 +15,25 @@ interface AllProductsProps {
 
 export default function AllProducts({ searchTerm }: AllProductsProps) {
   const search = Route.useSearch(); // Gets the validated search params
-  const filter = search.filter || "all"; // Defaults to "all" if not provided
+  const filter = search.filter || null; // By default, there's no filter
 
   const {
-    data: products,
+    data: products = [],
     isLoading,
     error,
     refetch,
   } = useQuery({
     queryKey: ["products", { filter }],
-    queryFn: () => fetchProducts(filter),
+    queryFn: () => fetchProducts(filter || undefined),
     retry: 2,
   });
 
   if (isLoading) return <Loader />;
+
   if (error) {
     return (
       <ErrorLoadingButton
-        errorMessage="Error loading products. Please try again later."
+        errorMessage={`Error loading products: ${error.message}`}
         onRetry={refetch}
       />
     );
@@ -41,7 +42,7 @@ export default function AllProducts({ searchTerm }: AllProductsProps) {
   // Filters the products client-side based on search term
   const filteredProducts = products.filter((product: Product) => {
     const matchesFilter =
-      filter === "all-products" ||
+      !filter || // If no filter, it means "All Products"
       (filter === "top-rated" && product.rating >= 4.5) ||
       (filter === "sale" && product.price > product.discountedPrice);
 
@@ -52,9 +53,10 @@ export default function AllProducts({ searchTerm }: AllProductsProps) {
     return matchesFilter && matchesSearchTerm;
   });
 
+  // To display a message if no products are found based on the search term or filter
   if (!filteredProducts.length) {
     return (
-      <div className="mt-32 flex flex-col items-center justify-center">
+      <div className="my-20 flex flex-col items-center justify-center sm:mt-32">
         {searchTerm
           ? "No products match your search."
           : "No products found in this category."}

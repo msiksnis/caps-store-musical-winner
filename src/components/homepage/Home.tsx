@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 
 import AllProducts from "./AllProducts";
@@ -9,17 +9,37 @@ import { Route } from "../../routes";
 import { FilterOption } from "../../lib/types";
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const filter = Route.useSearch().filter || "all-products";
+  const { filter, query = "" } = Route.useSearch();
+  const debouncedSearchTerm = useDebounce(query, 300);
 
+  // Handles filter change, uses null for "All Products"
   const handleFilterChange = useCallback(
-    (newFilter: FilterOption) => {
+    (newFilter: FilterOption | null) => {
+      navigate({
+        search: (prev) => {
+          const updatedSearch = { ...prev };
+
+          if (newFilter) {
+            updatedSearch.filter = newFilter;
+          } else {
+            delete updatedSearch.filter;
+          }
+
+          return updatedSearch;
+        },
+      });
+    },
+    [navigate],
+  );
+
+  // Handle search term update
+  const setSearchTerm = useCallback(
+    (term: string) => {
       navigate({
         search: (prev) => ({
           ...prev,
-          filter: newFilter,
+          query: term,
         }),
       });
     },
@@ -30,9 +50,9 @@ export default function Home() {
     <div className="mx-auto px-4 sm:max-w-4xl md:max-w-5xl md:px-10 xl:max-w-7xl">
       <HeadingSection />
       <FilterButtons
-        filter={filter}
+        filter={filter || null}
         handleFilterChange={handleFilterChange}
-        searchTerm={searchTerm}
+        searchTerm={query}
         setSearchTerm={setSearchTerm}
       />
       <AllProducts searchTerm={debouncedSearchTerm} />

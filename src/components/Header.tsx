@@ -107,22 +107,11 @@ function MobileMenu({ isOpen, closeMenu }: MobileMenuProps) {
 
   return (
     <motion.div
-      className="fixed right-0 top-40 z-40 h-[calc(100vh-10rem)] w-screen bg-white md:hidden"
+      className="fixed right-0 top-60 z-40 h-[calc(100vh-10rem)] w-screen bg-white md:hidden"
       initial="closed"
       animate={isOpen ? "open" : "closed"}
       variants={variants}
     >
-      <div className="relative mx-auto my-10 flex w-2/3">
-        <label htmlFor="search" className="sr-only">
-          Search
-        </label>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="focus:border-foreground border-muted-foreground peer w-full cursor-pointer rounded-full border px-2 py-1.5 pl-4 outline-none transition-all duration-300 focus:cursor-text"
-        />
-        <SearchIcon className="text-foreground/70 pointer-events-none absolute right-2 top-1/2 size-6 -translate-y-1/2 transform transition-opacity duration-200 peer-focus:opacity-0" />
-      </div>
       <nav className="flex h-full flex-col items-center justify-start space-y-6 text-2xl">
         <Link
           to="/"
