@@ -8,11 +8,21 @@ interface SearchProps {
   className?: string;
 }
 
+/**
+ * Renders a search input field with dynamic search icon and reset functionality.
+ *
+ * The component allows users to input a search term, displays a search icon when the input is empty,
+ * and an "X" icon when there is a search term, enabling the user to clear the search. It integrates
+ * the custom hook `useResetSearchQuery` to reset the search query when the "X" icon is clicked.
+ *
+ * @param props - The props for the Search component.
+ * @returns The rendered search input field component.
+ */
 export default function Search({
   searchTerm,
   setSearchTerm,
   className,
-}: SearchProps) {
+}: SearchProps): JSX.Element {
   const resetSearchQuery = useResetSearchQuery();
 
   return (
@@ -20,6 +30,7 @@ export default function Search({
       <label htmlFor="search" className="sr-only">
         Search
       </label>
+
       <input
         type="text"
         placeholder="Search products..."
@@ -27,6 +38,7 @@ export default function Search({
         onChange={(e) => setSearchTerm(e.target.value)}
         className={cn("focus:border-foreground peer", className)}
       />
+
       <SearchIcon
         className={cn(
           "text-foreground/70 peer-hover:text-primary pointer-events-none absolute bottom-1.5 left-0 size-5 transform transition-all duration-200 sm:right-2 sm:top-1/2 sm:size-6 sm:-translate-y-1/2 peer-focus:sm:opacity-0",

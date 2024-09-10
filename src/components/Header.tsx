@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Rotate as Hamburger } from "hamburger-react";
-import { SearchIcon, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { cn } from "../lib/utils";
