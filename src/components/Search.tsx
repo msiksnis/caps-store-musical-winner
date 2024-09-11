@@ -41,14 +41,14 @@ export default function Search({
 
       <SearchIcon
         className={cn(
-          "text-foreground/70 peer-hover:text-primary pointer-events-none absolute bottom-2 left-2 size-5 transform transition-all duration-200 sm:right-2 sm:top-1/2 sm:size-6 sm:-translate-y-1/2 peer-focus:sm:opacity-0",
+          "text-foreground/70 peer-hover:text-primary pointer-events-none absolute bottom-2.5 left-2 size-5 transform transition-all duration-200 sm:right-2 sm:top-1/2 sm:size-6 sm:-translate-y-1/2 peer-focus:sm:opacity-0",
           { "sm:hidden": searchTerm },
         )}
       />
 
       {searchTerm && (
         <XIcon
-          className="peer-focus:text-primary hover:text-primary absolute bottom-2 right-2 size-5 transform cursor-pointer text-gray-500 transition-colors duration-200 sm:top-1/2 sm:size-6 sm:-translate-y-1/2"
+          className="peer-focus:text-primary hover:text-primary absolute bottom-2.5 right-2 size-5 transform cursor-pointer text-gray-500 transition-colors duration-200 sm:top-1/2 sm:size-6 sm:-translate-y-1/2"
           onClick={() => {
             setSearchTerm("");
             resetSearchQuery();
