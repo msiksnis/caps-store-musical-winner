@@ -3,22 +3,21 @@ import { useNavigate } from "@tanstack/react-router";
 /**
  * Custom hook to reset the search query in the URL.
  *
- * This hook utilizes TanStack Router's `useNavigate` function to update
- * the search query in the URL without modifying other query parameters or state.
- * It effectively resets the search query to its previous state or clears it.
+ * This hook removes the `query` parameter and its value from the URL.
  *
- * @returns A function that resets the search query when called.
+ * @returns A function that resets the search query by removing it from the URL.
  */
 export function useResetSearchQuery(): () => void {
   const navigate = useNavigate();
 
   /**
-   * Resets the search query in the URL by navigating without modifying the existing state.
+   * Resets the search query by removing the `query` parameter from the URL.
    */
   const resetSearchQuery = () => {
     navigate({
       search: (prev) => {
         const updatedSearch = { ...prev };
+        delete updatedSearch.query; // Remove 'query' parameter completely
         return updatedSearch;
       },
     });
