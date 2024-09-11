@@ -36,7 +36,7 @@ export default function FilterButtons({
         {/* All Products Button */}
         <button
           className={cn(
-            "text-foreground/70 hover:bg-muted rounded-full border px-6 py-2 shadow-sm transition-all duration-200",
+            "text-primary border-primary group relative overflow-hidden rounded-full border px-6 py-2 shadow-sm hover:text-white md:px-10",
             {
               "bg-primary border-primary hover:bg-primary text-white shadow-md":
                 !filter,
@@ -45,7 +45,8 @@ export default function FilterButtons({
           aria-label="Show all products"
           onClick={() => handleFilterChange(null)}
         >
-          All Products
+          <div className="bg-primary absolute -left-2 top-1/2 -z-10 size-0 -translate-y-1/2 rounded-full transition-all duration-300 ease-in-out group-hover:-left-1/2 group-hover:size-64" />
+          <span>All Products</span>
         </button>
 
         {/* Other Filters */}
@@ -53,7 +54,7 @@ export default function FilterButtons({
           <button
             key={option}
             className={cn(
-              "text-foreground/70 hover:bg-muted rounded-full border px-6 py-2 shadow-sm transition-all duration-200",
+              "text-primary border-primary group relative overflow-hidden rounded-full border px-6 py-2 shadow-sm hover:text-white md:px-10",
               {
                 "bg-primary border-primary hover:bg-primary text-white shadow-md":
                   filter === option,
@@ -62,7 +63,8 @@ export default function FilterButtons({
             aria-label={`Filter by ${formatFilterLabel(option)}`}
             onClick={() => handleFilterChange(option)}
           >
-            {formatFilterLabel(option)}
+            <div className="bg-primary absolute -left-2 top-1/2 -z-10 size-0 -translate-y-1/2 rounded-full transition-all duration-300 ease-in-out group-hover:-left-1/2 group-hover:size-64" />
+            <span>{formatFilterLabel(option)}</span>
           </button>
         ))}
       </div>

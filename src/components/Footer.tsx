@@ -21,28 +21,28 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/src/assets/icons/instagram.svg" alt="instagram" />
+              <img src="/assets/icons/instagram.svg" alt="instagram" />
             </a>
             <a
               href="https://www.facebook.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/src/assets/icons/facebook.svg" alt="facebook" />
+              <img src="/assets/icons/facebook.svg" alt="facebook" />
             </a>
             <a
               href="https://www.linkedin.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/src/assets/icons/linkedin.svg" alt="linked in" />
+              <img src="/assets/icons/linkedin.svg" alt="linked in" />
             </a>
             <a
               href="https://x.com/home"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/src/assets/icons/x.svg" alt="x" />
+              <img src="/assets/icons/x.svg" alt="x" />
             </a>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function Footer() {
           </div>
           <div className="p-4 md:w-1/2 xl:w-full">
             <img
-              src="/src/assets/map.png"
+              src="/assets/map.png"
               alt="map"
               className="ml-auto aspect-[4/2] rounded-2xl object-cover xl:h-64 xl:pl-10"
             />

@@ -21,7 +21,7 @@ export default function Header() {
           className="absolute left-2 top-2 z-50 scale-90 sm:left-6 sm:top-6 md:scale-100 xl:left-40"
         >
           <div className="border-foreground relative rounded-full border-[1.5px] p-4 md:p-6">
-            <img src="/src/assets/logo.png" alt="logo" />
+            <img src="/assets/logo.png" alt="logo" />
           </div>
         </Link>
 

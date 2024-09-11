@@ -59,7 +59,7 @@ export default function ProductCard({
         >
           <div className="relative">
             <img
-              src="/src/assets/discount_tag.svg"
+              src="/assets/discount_tag.svg"
               alt="discount tag"
               className=""
             />
