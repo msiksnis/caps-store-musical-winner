@@ -73,7 +73,7 @@ export default function FilterButtons({
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         className={cn(
-          "focus:text-primary mt-6 h-9 w-full cursor-pointer rounded-full border pl-8 outline-none transition-all duration-200 focus:cursor-text focus:placeholder:opacity-100 sm:mt-0 sm:size-10 sm:border-transparent sm:p-2 sm:pl-0 sm:placeholder:opacity-0 focus:sm:w-40 focus:sm:pl-4 focus:md:w-72",
+          "focus:text-primary mt-6 h-10 w-full cursor-pointer rounded-full border pl-8 outline-none transition-all duration-200 focus:cursor-text focus:placeholder:opacity-100 sm:mt-0 sm:size-10 sm:border-transparent sm:p-2 sm:pl-0 sm:placeholder:opacity-0 focus:sm:w-40 focus:sm:pl-4 focus:md:w-72",
           {
             "text-primary border-b border-gray-400 sm:w-40 sm:border-gray-400 sm:pl-4 md:w-72":
               searchTerm,
