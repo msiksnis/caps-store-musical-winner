@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { FILTER_OPTIONS } from "../lib/utils";
-import Home from "../components/homepage/Home";
+import Home from "../components/homepage";
 
 const productFilterSchema = z.object({
   filter: z.enum(FILTER_OPTIONS).optional(),
