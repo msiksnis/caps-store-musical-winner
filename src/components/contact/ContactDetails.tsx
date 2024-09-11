@@ -1,6 +1,15 @@
+import { motion } from "framer-motion";
+import { blurInVariants } from "../../lib/utils";
+
 export default function ContactDetails() {
   return (
-    <div className="my-6 flex w-full flex-col-reverse justify-center gap-6 md:flex-row">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 0.5, delay: 0.3 }}
+      variants={blurInVariants}
+      className="my-6 flex w-full flex-col-reverse justify-center gap-6 md:flex-row"
+    >
       <div className="flex flex-col gap-6 md:w-1/3">
         <div className="flex h-full min-h-64 flex-col rounded-2xl bg-muted p-6 text-xl font-light text-muted-foreground md:min-h-max">
           <span className="pb-1">Phone number</span>
@@ -28,6 +37,6 @@ export default function ContactDetails() {
           support team is dedicated to addressing your inquiries.
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 }
