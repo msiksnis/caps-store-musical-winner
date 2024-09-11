@@ -26,7 +26,7 @@ export default function Search({
   const resetSearchQuery = useResetSearchQuery();
 
   return (
-    <div className="relative w-2/5 sm:w-auto">
+    <div className="relative w-3/5 sm:w-auto">
       <label htmlFor="search" className="sr-only">
         Search
       </label>
