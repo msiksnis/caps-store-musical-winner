@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { blurInVariants } from "../../lib/utils";
+import ContactForm from "./ContactForm";
 
 export default function ContactDetails() {
   return (
@@ -28,7 +29,7 @@ export default function ContactDetails() {
           </span>
         </div>
       </div>
-      <div className="flex aspect-square flex-col rounded-2xl bg-muted p-6 md:w-2/3">
+      <div className="flex flex-col rounded-2xl bg-muted p-6 md:min-h-[600px] md:w-2/3">
         <span className="text-xl font-light text-muted-foreground">
           Drop us a message
         </span>
@@ -36,6 +37,7 @@ export default function ContactDetails() {
           We're always here to assist you at Cap&apos;s Store. Our customer
           support team is dedicated to addressing your inquiries.
         </span>
+        <ContactForm />
       </div>
     </motion.div>
   );
