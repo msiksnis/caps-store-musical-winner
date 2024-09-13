@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "./ProductCard";
 import { Product } from "../../lib/types";
 import Loader from "../../components/Loader";
 import { fetchProducts } from "../../api";

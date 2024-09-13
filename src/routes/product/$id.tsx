@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ProductById from "../../components/ProductById";
+import SingleProduct from "../../components/single-product";
 
 export const Route = createFileRoute("/product/$id")({
-  component: ProductById,
+  component: SingleProduct,
 });

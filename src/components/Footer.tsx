@@ -1,15 +1,17 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 export default function Footer() {
+  const navigate = useNavigate();
+
   return (
     <footer className="mx-auto mt-10 w-full items-center justify-between px-4 sm:max-w-4xl md:mt-20 md:max-w-5xl md:px-10 xl:max-w-7xl">
-      <div className="bg-muted flex w-full grid-cols-3 flex-col rounded-2xl xl:grid">
+      <div className="flex w-full grid-cols-3 flex-col rounded-2xl bg-muted xl:grid">
         <div className="flex flex-col justify-between py-2 md:flex-row md:items-center xl:flex-col xl:items-start xl:justify-start">
           <div className="p-4">
             <h1 className="text-2xl font-medium sm:text-3xl md:text-4xl">
               Cap&apos;s Store
             </h1>
-            <h2 className="text-muted-foreground max-w-64 text-balance py-4 font-light xl:border-b">
+            <h2 className="max-w-64 text-balance py-4 font-light text-muted-foreground xl:border-b">
               Selling premium products, designed to elevate your everyday
               experience
             </h2>
@@ -51,29 +53,32 @@ export default function Footer() {
             <div className="">
               <h3 className="text-xl">Pages</h3>
               <div className="py-4">
-                <Link to="/" className="text-muted-foreground block py-2">
+                <Link to="/" className="block py-2 text-muted-foreground">
                   Home
                 </Link>
                 <Link
                   to="/about"
-                  className="text-muted-foreground block whitespace-nowrap py-2"
+                  className="block whitespace-nowrap py-2 text-muted-foreground"
                 >
                   About Us
                 </Link>
-                <Link to="/" className="text-muted-foreground block py-2">
+                <button
+                  onClick={() => navigate({ search: { filter: "sale" } })}
+                  className="block py-2 text-muted-foreground"
+                >
                   Sale
-                </Link>
+                </button>
               </div>
             </div>
             <div className="">
               <h3 className="text-xl">Support</h3>
               <div className="py-4">
-                <Link to="/faq" className="text-muted-foreground block py-2">
+                <Link to="/faq" className="block py-2 text-muted-foreground">
                   FAQ
                 </Link>
                 <Link
                   to="/contact"
-                  className="text-muted-foreground block py-2"
+                  className="block py-2 text-muted-foreground"
                 >
                   Contact
                 </Link>
@@ -89,7 +94,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <p className="text-muted-foreground py-2 text-sm">
+      <p className="py-2 text-sm text-muted-foreground">
         2024 © designed & developed by devmarty.com
       </p>
     </footer>

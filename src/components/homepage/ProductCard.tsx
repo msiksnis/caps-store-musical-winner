@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Product } from "../lib/types";
-import NumberTicker from "./NumberTicker";
-import { calculateDiscountPercentage, cn } from "../lib/utils";
+
+import { Product } from "../../lib/types";
+import { calculateDiscountPercentage, cn } from "../../lib/utils";
+import NumberTicker from "../NumberTicker";
 
 interface ProductCardProps {
   product: Product;

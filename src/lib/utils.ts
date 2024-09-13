@@ -14,6 +14,18 @@ export function calculateDiscountPercentage(
   return Math.round(discount);
 }
 
+export function calculateDiscount(
+  originalPrice: number,
+  discountedPrice: number,
+): number {
+  return originalPrice - discountedPrice;
+}
+
+export const fadeUpVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1 },
+};
+
 export const blurInVariants = {
   hidden: { filter: "blur(3px)", opacity: 0 },
   visible: { filter: "blur(0px)", opacity: 1 },
