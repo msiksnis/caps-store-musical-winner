@@ -45,7 +45,7 @@ export default function SingleProduct() {
   if (error) return <div>Error loading product.</div>;
 
   return (
-    <div className="mx-auto mt-40 px-4 sm:max-w-4xl md:max-w-5xl md:px-10 xl:max-w-7xl">
+    <div className="mx-auto mt-20 px-4 sm:max-w-4xl md:mt-40 md:max-w-5xl md:px-10 xl:max-w-7xl">
       {product && (
         <>
           <div className="flex flex-col lg:flex-row">
@@ -110,7 +110,7 @@ export default function SingleProduct() {
                 <button className="w-full rounded-3xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800">
                   Add to cart
                 </button>
-                <div className="pt-8 text-center font-extralight text-stone-500">
+                <div className="pt-8 text-center font-extralight text-stone-600">
                   <p>Estimate delivery times: 3-6 days (International)</p>
                   <p>
                     Return within 45 days of purchase. Duties & taxes are
@@ -118,7 +118,7 @@ export default function SingleProduct() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-6 divide-y py-10 text-stone-500 lg:py-0">
+              <div className="flex flex-col gap-6 divide-y py-10 text-stone-600 lg:py-0">
                 <div className="flex w-full items-center justify-between pt-6">
                   <div className="flex items-center space-x-2">
                     <ShieldCheck className="size-6" />
@@ -152,7 +152,7 @@ export default function SingleProduct() {
               <div className="text-center lg:text-start">
                 <p className="text-lg">Free Shipping</p>
                 <p className="font-light text-muted-foreground">
-                  200+ orders ship free
+                  200 NOK + orders ship free
                 </p>
               </div>
             </div>
