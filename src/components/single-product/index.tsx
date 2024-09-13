@@ -14,6 +14,9 @@ import {
   ShieldCheck,
   TruckIcon,
   Undo2Icon,
+  Star,
+  StarHalf,
+  Star as EmptyStar,
 } from "lucide-react";
 
 export default function SingleProduct() {
@@ -47,13 +50,13 @@ export default function SingleProduct() {
         <>
           <div className="flex flex-col lg:flex-row">
             <div
-              className="relative w-full lg:w-1/2"
+              className="relative w-full lg:w-7/12"
               onMouseEnter={handleMouseEnter}
             >
               <img
                 src={product.image.url}
                 alt={product.image.alt}
-                className="max-h-[36rem] w-full rounded-2xl object-cover object-center opacity-95 shadow-sm group-hover:opacity-100"
+                className="size-full max-h-[43rem] rounded-2xl object-cover object-center opacity-95 shadow-sm group-hover:opacity-100"
               />
               {product.price > product.discountedPrice && (
                 <div
@@ -88,19 +91,24 @@ export default function SingleProduct() {
                 </div>
               )}
             </div>
-            <div className="flex min-h-[36rem] w-full flex-col pt-10 md:pt-20 lg:w-1/2 lg:pl-10 lg:pt-0">
+            <div className="flex min-h-[43rem] w-full flex-col pt-10 md:pt-20 lg:w-5/12 lg:pl-10 lg:pt-0">
               <div className="flex-1">
                 <h1 className="text-[2.5rem] font-light leading-10">
                   {product?.title}
                 </h1>
-                <h2 className="text-pretty pt-4 font-light text-muted-foreground">
+                <h2 className="text-pretty py-4 font-light text-muted-foreground">
                   {product?.description}
                 </h2>
-                <p className="flex flex-col py-8 text-3xl font-light">
+                {product?.rating > 0 && (
+                  <div className="py-2">
+                    <RatingStars rating={product.rating} />
+                  </div>
+                )}
+                <p className="flex flex-col pb-8 pt-4 text-3xl font-light">
                   {product?.price} NOK
                 </p>
                 <button className="w-full rounded-3xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800">
-                  Buy Now
+                  Add to cart
                 </button>
                 <div className="pt-8 text-center font-extralight text-stone-500">
                   <p>Estimate delivery times: 3-6 days (International)</p>
@@ -173,8 +181,58 @@ export default function SingleProduct() {
               </div>
             </div>
           </div>
+          {product.reviews.length > 0 && (
+            <div className="p-10">reviews here</div>
+          )}
         </>
       )}
     </div>
   );
+}
+
+interface RatingStarsProps {
+  rating: number; // The rating to render
+}
+
+function RatingStars({ rating }: RatingStarsProps) {
+  // To round the rating to the nearest half for rendering purposes
+  const roundedRating = Math.round(rating * 2) / 2;
+
+  const renderStars = () => {
+    const stars = [];
+
+    // Generates the stars based on the rounded rating
+    for (let i = 1; i <= 5; i++) {
+      if (i <= roundedRating) {
+        stars.push(
+          <Star
+            key={i}
+            className="inline size-5 fill-yellow-500 text-primary"
+          />,
+        );
+      } else if (i - 0.5 === roundedRating) {
+        stars.push(
+          <div className="relative inline-flex">
+            <StarHalf
+              key={i}
+              className="inline size-5 fill-yellow-500 text-primary"
+              strokeWidth={1.5}
+            />
+            <EmptyStar
+              key={i}
+              className="absolute inset-0 inline size-5 text-primary"
+            />
+          </div>,
+        );
+      } else {
+        stars.push(
+          <EmptyStar key={i} className="inline size-5 text-primary" />,
+        );
+      }
+    }
+
+    return stars;
+  };
+
+  return <div className="flex">{renderStars()}</div>;
 }
