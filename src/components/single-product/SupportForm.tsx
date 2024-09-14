@@ -7,7 +7,6 @@ import { cn } from "../../lib/utils";
 
 interface FormProps {
   fullName: string;
-  subject: string;
   email: string;
   message: string;
 }
@@ -15,7 +14,6 @@ interface FormProps {
 // Schema definition using Zod for form validation
 const supportFormSchema = z.object({
   fullName: z.string().min(3, "Name is required"),
-  subject: z.string().min(3, "Subject is required"),
   email: z.string().email("Invalid email format"),
   message: z
     .string()
@@ -25,7 +23,7 @@ const supportFormSchema = z.object({
 /**
  * A functional component representing a form for support.
  *
- * This form includes input fields for full name, subject, email, and message,
+ * This form includes input fields for full name, email, and message,
  * and uses Zod for schema validation along with react-hook-form for form state management.
  * Validation errors are shown inline under each field.
  *
@@ -83,25 +81,6 @@ export default function SupportForm() {
           {errors.fullName && (
             <div className="absolute -bottom-6 left-0 text-sm text-red-500">
               {errors.fullName.message}
-            </div>
-          )}
-        </div>
-        <div className="relative flex-1">
-          <label htmlFor="subject" className="sr-only">
-            Subject
-          </label>
-          <input
-            placeholder="Subject"
-            className={cn(
-              "w-full rounded-xl border border-gray-100 bg-gray-100 p-4 text-primary shadow-sm outline-none placeholder:text-gray-600",
-              { "border-red-500 focus-visible:ring-0": errors.subject },
-            )}
-            id="subject"
-            {...register("subject")}
-          />
-          {errors.subject && (
-            <div className="absolute -bottom-6 left-0 text-sm text-red-500">
-              {errors.subject.message}
             </div>
           )}
         </div>

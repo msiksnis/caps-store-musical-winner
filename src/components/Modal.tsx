@@ -63,14 +63,14 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4 md:p-0"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-70 p-0 md:items-center md:p-0"
       aria-modal="true"
       role="dialog"
       aria-labelledby="modal-title"
       onClick={handleOverlayClick}
     >
       <div
-        className="relative mt-10 min-h-96 w-full max-w-2xl overflow-auto rounded-2xl bg-card p-6 shadow-lg"
+        className="relative w-full max-w-2xl overflow-auto rounded-t-2xl bg-card p-4 shadow-lg md:min-h-96 md:rounded-2xl md:p-6"
         role="document"
       >
         <button

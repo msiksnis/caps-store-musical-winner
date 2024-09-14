@@ -1,6 +1,6 @@
 export default function ShippingContent() {
   return (
-    <div className="space-y-4 text-pretty pb-10 font-light">
+    <div className="space-y-4 text-pretty pb-4 font-light md:pb-10">
       <p>
         For all orders exceeding a value of 200 NOK shipping is offered for
         free.

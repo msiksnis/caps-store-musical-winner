@@ -1,6 +1,6 @@
 export default function WarrantyContent() {
   return (
-    <div className="space-y-4 text-pretty pb-10 font-light">
+    <div className="space-y-4 text-pretty pb-4 font-light md:pb-10">
       <p>
         Cap&apos;s Store offers a two-year manufacturer warranty on all
         products. Refurbished products purchased from authorized retailers are
