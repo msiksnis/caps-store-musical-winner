@@ -10,12 +10,11 @@ import {
   TruckIcon,
   Undo2Icon,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
+import { Product } from "../../lib/types";
 import { fetchProductById } from "../../api";
 import Loader from "../Loader";
-import { calculateDiscount, cn } from "../../lib/utils";
-import NumberTicker from "../NumberTicker";
-
 import Reviews from "./Reviews";
 import RatingStars from "./RatingStars";
 import ErrorLoadingButton from "../ErrorLoadingButton";
@@ -23,24 +22,46 @@ import WarrantyContent from "./WarrantyContent";
 import ShippingContent from "./ShippingContent";
 import SupportContent from "./SupportContent";
 import Modal from "../Modal";
+import DiscountTag from "../DiscountTag";
+import { blurInVariants } from "../../lib/utils";
 
-const infoItem = [
+interface InfoItem {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  modalIcon: React.ComponentType<{ className?: string }>;
+  modalTitle: string;
+  modalContent: ReactNode;
+}
+
+const infoItems: InfoItem[] = [
   {
     label: "Warranty",
     icon: ShieldCheck,
-    type: "warranty",
+    modalIcon: ShieldCheck,
+    modalTitle: "Warranty Information",
+    modalContent: <WarrantyContent />,
   },
   {
     label: "Shipping & Delivery",
     icon: ContainerIcon,
-    type: "shipping",
+    modalIcon: TruckIcon,
+    modalTitle: "Shipping & Delivery",
+    modalContent: <ShippingContent />,
   },
   {
     label: "Support",
     icon: HeadsetIcon,
-    type: "support",
+    modalIcon: HeadsetIcon,
+    modalTitle: "Support",
+    modalContent: <SupportContent />,
   },
 ];
+
+interface ModalData {
+  modalIcon: ReactNode;
+  modalTitle: string;
+  modalContent: ReactNode;
+}
 
 /**
  * Renders a detailed view of a single product, including images, pricing, ratings, and reviews.
@@ -52,37 +73,48 @@ export default function SingleProduct() {
 
   const [isAnimating, setIsAnimating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalIcon, setModalIcon] = useState<ReactNode>(null);
-  const [modalTitle, setModalTitle] = useState("");
-  const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [modalData, setModalData] = useState<ModalData | null>(null);
 
-  const openModal = (type: "warranty" | "shipping" | "support") => {
+  // Fetch the product data based on the ID from the URL parameters
+  const {
+    data: product,
+    isLoading,
+    refetch,
+    error,
+  } = useQuery<Product>({
+    queryKey: ["product", id],
+    queryFn: () => fetchProductById(id),
+    retry: 2,
+  });
+
+  if (isLoading) return <Loader />;
+
+  const errorMessage =
+    error instanceof Error
+      ? `Error loading product: ${error.message}`
+      : "An unexpected error occurred while loading the product.";
+
+  if (error) {
+    return <ErrorLoadingButton errorMessage={errorMessage} onRetry={refetch} />;
+  }
+
+  /**
+   * Opens the modal with the specified item's content.
+   *
+   * @param item - The item containing modal data to display.
+   */
+  const openModal = (item: (typeof infoItems)[number]) => {
+    setModalData({
+      modalIcon: <item.modalIcon className="h-6 w-6" />,
+      modalTitle: item.modalTitle,
+      modalContent: item.modalContent,
+    });
     setIsModalOpen(true);
-    switch (type) {
-      case "warranty":
-        setModalIcon(<ShieldCheck />);
-        setModalTitle("Warranty Information");
-        setModalContent(<WarrantyContent />);
-        break;
-      case "shipping":
-        setModalIcon(<TruckIcon />);
-        setModalTitle("Shipping & Delivery");
-        setModalContent(<ShippingContent />);
-        break;
-      case "support":
-        setModalIcon(<HeadsetIcon />);
-        setModalTitle("Support");
-        setModalContent(<SupportContent />);
-        break;
-      default:
-        break;
-    }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setModalTitle("");
-    setModalContent(null);
+    setModalData(null);
   };
 
   // Start the discount tag animation when the mouse enters the image area
@@ -95,33 +127,15 @@ export default function SingleProduct() {
     setIsAnimating(false);
   };
 
-  // Fetch the product data based on the ID from the URL parameters
-  const {
-    data: product,
-    isLoading,
-    refetch,
-    error,
-  } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => fetchProductById(id),
-    retry: 2,
-  });
-
-  if (isLoading) return <Loader />;
-
-  if (error) {
-    return (
-      <ErrorLoadingButton
-        errorMessage={`Error loading product: ${error.message}`}
-        onRetry={refetch}
-      />
-    );
-  }
-
   return (
     <div className="mx-auto mt-20 px-4 sm:max-w-4xl md:mt-40 md:max-w-5xl md:px-10 xl:max-w-7xl">
       {product && (
-        <>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.3, delay: 0.1 }}
+          variants={blurInVariants}
+        >
           <div className="flex flex-col lg:flex-row">
             <div
               className="relative w-full lg:w-7/12"
@@ -130,45 +144,26 @@ export default function SingleProduct() {
               <img
                 src={product.image.url}
                 alt={product.image.alt}
+                loading="lazy"
                 className="size-full max-h-[43rem] rounded-2xl object-cover object-center opacity-95 shadow-sm group-hover:opacity-100"
               />
               {product.price > product.discountedPrice && (
-                // Display discount tag with animation if the product is discounted
-                <div
-                  className={cn(
-                    "absolute right-4 top-4 origin-top transition-none",
-                    {
-                      "animate-sway": isAnimating,
-                    },
-                  )}
+                <DiscountTag
+                  originalPrice={product.price}
+                  discountedPrice={product.discountedPrice}
+                  isAnimating={isAnimating}
                   onAnimationEnd={handleAnimationEnd}
-                >
-                  <div className="relative">
-                    <img src="/assets/discount_tag.svg" alt="discount tag" />
-                    <div className="absolute right-1/2 top-12 translate-x-1/2 -rotate-6 text-white">
-                      <div className="flex flex-col whitespace-nowrap text-3xl">
-                        <div className="flex">
-                          -
-                          <NumberTicker
-                            value={calculateDiscount(
-                              product?.price,
-                              product?.discountedPrice,
-                            )}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  displayType="amount" // Displays discount amount
+                />
               )}
             </div>
             <div className="flex min-h-[43rem] w-full flex-col pt-10 md:pt-20 lg:w-5/12 lg:pl-10 lg:pt-0">
               <div className="flex-1">
                 <h1 className="text-[2.5rem] font-light leading-10">
-                  {product?.title}
+                  {product.title}
                 </h1>
                 <h2 className="text-pretty py-4 font-light text-muted-foreground">
-                  {product?.description}
+                  {product.description}
                 </h2>
                 {product?.rating > 0 && (
                   <div className="py-2">
@@ -204,28 +199,29 @@ export default function SingleProduct() {
               </div>
 
               <div className="flex flex-col divide-y py-10 text-stone-600 lg:py-0">
-                {infoItem.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex w-full cursor-pointer items-center justify-between py-6 transition-all duration-200 hover:text-primary"
-                    onClick={() => openModal(item.type as any)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") openModal(item.type as any);
-                    }}
+                {infoItems.map((item) => (
+                  <button
+                    key={item.label}
+                    className="flex w-full items-center justify-between py-6 transition-all duration-200 hover:text-primary"
+                    onClick={() => openModal(item)}
                   >
                     <div className="flex items-center space-x-2">
                       <item.icon className="h-6 w-6" />
                       <p>{item.label}</p>
                     </div>
                     <ArrowRight className="h-5 w-5" />
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
           </div>
-          <div className="mt-12 flex flex-col items-center justify-around space-y-10 rounded-2xl bg-muted py-10 lg:flex-row lg:space-y-0">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.3, delay: 0.3 }}
+            variants={blurInVariants}
+            className="mt-12 flex flex-col items-center justify-around space-y-10 rounded-2xl bg-muted py-10 lg:flex-row lg:space-y-0"
+          >
             <div className="flex flex-col items-center gap-2 lg:flex-row lg:gap-4">
               <TruckIcon
                 strokeWidth={1.5}
@@ -262,21 +258,30 @@ export default function SingleProduct() {
                 </p>
               </div>
             </div>
-          </div>
-          {product?.reviews?.length > 0 && (
+          </motion.div>
+          {product.reviews?.length > 0 && (
             // Render the Reviews component if there are reviews
-            <Reviews reviews={product.reviews} />
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 0.3, delay: 0.5 }}
+              variants={blurInVariants}
+            >
+              <Reviews reviews={product.reviews} />
+            </motion.div>
           )}
-        </>
+        </motion.div>
       )}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        title={modalTitle}
-        icon={modalIcon}
-      >
-        {modalContent}
-      </Modal>
+      {modalData && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title={modalData.modalTitle}
+          icon={modalData.modalIcon}
+        >
+          {modalData.modalContent}
+        </Modal>
+      )}
     </div>
   );
 }

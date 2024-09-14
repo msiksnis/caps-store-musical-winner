@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { Product } from "../../lib/types";
-import { calculateDiscountPercentage, cn } from "../../lib/utils";
-import NumberTicker from "../NumberTicker";
+import DiscountTag from "../DiscountTag";
 
 interface ProductCardProps {
   product: Product;
@@ -18,9 +17,7 @@ interface ProductCardProps {
  * @param {ProductCardProps} props - The product information passed to the component.
  * @returns The rendered product card component.
  */
-export default function ProductCard({
-  product,
-}: ProductCardProps): JSX.Element {
+export default function ProductCard({ product }: ProductCardProps) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleMouseEnter = () => {
@@ -30,11 +27,6 @@ export default function ProductCard({
   const handleAnimationEnd = () => {
     setIsAnimating(false);
   };
-
-  const discountPercentage = calculateDiscountPercentage(
-    product.price,
-    product.discountedPrice,
-  );
 
   return (
     <Link
@@ -52,26 +44,13 @@ export default function ProductCard({
         <p className="text-muted-foreground">{product.discountedPrice} NOK</p>
       </div>
       {product.price > product.discountedPrice && (
-        <div
-          className={cn("absolute right-4 top-4 origin-top transition-none", {
-            "animate-sway": isAnimating,
-          })}
+        <DiscountTag
+          originalPrice={product.price}
+          discountedPrice={product.discountedPrice}
+          isAnimating={isAnimating}
           onAnimationEnd={handleAnimationEnd}
-        >
-          <div className="relative">
-            <img
-              src="/assets/discount_tag.svg"
-              alt="discount tag"
-              className=""
-            />
-            <div className="absolute right-1/2 top-12 translate-x-1/2 -rotate-6 text-white">
-              <div className="flex whitespace-nowrap text-3xl">
-                <NumberTicker value={discountPercentage} />
-                <p> %</p>
-              </div>
-            </div>
-          </div>
-        </div>
+          displayType="percentage" // Displays discount percentage
+        />
       )}
     </Link>
   );

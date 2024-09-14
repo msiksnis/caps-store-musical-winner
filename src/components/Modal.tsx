@@ -1,5 +1,3 @@
-// components/Modal.tsx
-
 import { ReactNode, useEffect, MouseEvent } from "react";
 import { XIcon } from "lucide-react";
 
@@ -84,8 +82,11 @@ export default function Modal({
         </button>
         <div className="divide-y">
           <div className="text-muted-primary mb-4 flex items-center gap-2">
-            <span className="mb-1">{icon}</span>
-            <h2 id="modal-title" className="text-xl">
+            <h2
+              id="modal-title"
+              className="mb-4 flex items-center text-xl font-semibold"
+            >
+              {icon && <span className="mr-2">{icon}</span>}
               {title}
             </h2>
           </div>
