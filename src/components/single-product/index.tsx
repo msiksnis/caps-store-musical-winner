@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "@tanstack/react-router";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import {
   ArrowRight,
   ContainerIcon,
@@ -11,6 +11,7 @@ import {
   Undo2Icon,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 import { Product } from "../../lib/types";
 import { fetchProductById } from "../../api";
@@ -24,6 +25,7 @@ import SupportContent from "./SupportContent";
 import Modal from "../Modal";
 import DiscountTag from "../DiscountTag";
 import { blurInVariants } from "../../lib/utils";
+import { useCartStore } from "../../stores/cartStore";
 
 interface InfoItem {
   label: string;
@@ -75,6 +77,15 @@ export default function SingleProduct() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<ModalData | null>(null);
 
+  // Adds the product to the cart.
+  const addToCart = useCartStore((state) => state.addToCart);
+  // Retrieves the quantity of the product in the cart.
+  const quantityInCart = useCartStore(
+    (state) => state.cartItems.find((item) => item.id === id)?.quantity || 0,
+  );
+
+  const navigate = useNavigate();
+
   // Fetch the product data based on the ID from the URL parameters
   const {
     data: product,
@@ -89,6 +100,7 @@ export default function SingleProduct() {
 
   if (isLoading) return <Loader />;
 
+  // Display error message with a retry option
   const errorMessage =
     error instanceof Error
       ? `Error loading product: ${error.message}`
@@ -97,6 +109,18 @@ export default function SingleProduct() {
   if (error) {
     return <ErrorLoadingButton errorMessage={errorMessage} onRetry={refetch} />;
   }
+
+  /**
+   * Adds the product to the cart.
+   * If the product is already in the cart, the quantity is increased by 1.
+   * If the product is not in the cart, it is added with a quantity of 1.
+   */
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product);
+      toast.success(`${product.title} added to cart!`);
+    }
+  };
 
   /**
    * Opens the modal with the specified item's content.
@@ -183,13 +207,34 @@ export default function SingleProduct() {
                   )}
                 </p>
 
-                <button
-                  aria-label="Add product to cart"
-                  className="w-full rounded-3xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800"
-                >
-                  Add to cart
-                </button>
-                <div className="pt-8 text-center font-extralight text-stone-600">
+                <div className="relative flex flex-col items-center pb-14">
+                  <button
+                    aria-label="Add product to cart"
+                    onClick={handleAddToCart}
+                    disabled={quantityInCart > 0}
+                    className="w-full rounded-3xl bg-primary py-4 font-semibold text-background shadow-sm transition-all duration-300 hover:bg-gray-900 hover:shadow-lg disabled:cursor-default disabled:bg-gray-500 disabled:hover:shadow-sm"
+                  >
+                    {quantityInCart > 0 ? "Added to Cart" : "Add to Cart"}
+                  </button>
+
+                  {quantityInCart > 0 && (
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ duration: 0.1, delay: 0.3 }}
+                      variants={blurInVariants}
+                      className="absolute bottom-4"
+                    >
+                      <Link
+                        to="/cart"
+                        className="text-primary underline underline-offset-2"
+                      >
+                        View Cart
+                      </Link>
+                    </motion.div>
+                  )}
+                </div>
+                <div className="text-center font-extralight text-stone-600">
                   <p>Estimate delivery times: 3-6 days (International)</p>
                   <p>
                     Return within 45 days of purchase. Duties &amp; taxes are

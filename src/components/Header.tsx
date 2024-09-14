@@ -7,9 +7,14 @@ import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { cn } from "../lib/utils";
+import { useCartStore } from "../stores/cartStore";
 
 export default function Header() {
   const [isOpen, setOpen] = useState(false);
+
+  const totalQuantity = useCartStore((state) =>
+    state.cartItems.reduce((sum, item) => sum + item.quantity, 0),
+  );
 
   const closeMenu = () => setOpen(false);
 
@@ -62,8 +67,13 @@ export default function Header() {
           >
             Contact
           </Link>
-          <Link to="/cart">
+          <Link to="/cart" className="relative">
             <ShoppingCart className="size-6" />
+            {totalQuantity > 0 && (
+              <span className="absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-white ring-0 ring-card ring-offset-2">
+                {totalQuantity}
+              </span>
+            )}
           </Link>
         </nav>
 
@@ -71,7 +81,11 @@ export default function Header() {
           <Hamburger distance="sm" rounded toggled={isOpen} toggle={setOpen} />
         </div>
       </header>
-      <MobileMenu isOpen={isOpen} closeMenu={closeMenu} />
+      <MobileMenu
+        isOpen={isOpen}
+        closeMenu={closeMenu}
+        totalQuantity={totalQuantity}
+      />
     </>
   );
 }
@@ -79,9 +93,10 @@ export default function Header() {
 interface MobileMenuProps {
   isOpen: boolean;
   closeMenu: () => void;
+  totalQuantity: number;
 }
 
-function MobileMenu({ isOpen, closeMenu }: MobileMenuProps) {
+function MobileMenu({ isOpen, closeMenu, totalQuantity }: MobileMenuProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -148,8 +163,13 @@ function MobileMenu({ isOpen, closeMenu }: MobileMenuProps) {
         >
           Contact
         </Link>
-        <Link to="/cart" onClick={closeMenu}>
+        <Link to="/cart" className="relative" onClick={closeMenu}>
           <ShoppingCart className="size-7" />
+          {totalQuantity > 0 && (
+            <span className="absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-white ring-0 ring-card ring-offset-2">
+              {totalQuantity}
+            </span>
+          )}
         </Link>
       </nav>
     </motion.div>
