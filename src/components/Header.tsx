@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Rotate as Hamburger } from "hamburger-react";
 import { ShoppingCart } from "lucide-react";
@@ -82,12 +82,21 @@ interface MobileMenuProps {
 }
 
 function MobileMenu({ isOpen, closeMenu }: MobileMenuProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const variants = {
     open: {
       x: 0,
       opacity: 1,
-      scale: 1,
-      filter: "blur(0px)",
       transition: {
         duration: 0.4,
         type: "spring",
@@ -96,8 +105,6 @@ function MobileMenu({ isOpen, closeMenu }: MobileMenuProps) {
     closed: {
       x: "100%",
       opacity: 0,
-      scale: 0.5,
-      filter: "blur(5px)",
       transition: {
         duration: 0.3,
         ease: "easeInOut",
@@ -107,7 +114,7 @@ function MobileMenu({ isOpen, closeMenu }: MobileMenuProps) {
 
   return (
     <motion.div
-      className="fixed right-0 top-60 z-40 h-[calc(100vh-10rem)] w-screen bg-white md:hidden"
+      className="fixed right-0 top-40 z-40 h-[calc(100vh-10rem)] w-screen bg-white pt-20 md:hidden"
       initial="closed"
       animate={isOpen ? "open" : "closed"}
       variants={variants}

@@ -1,11 +1,6 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-
-import { fetchProductById } from "../../api";
-import Loader from "../Loader";
-import { calculateDiscount, cn } from "../../lib/utils";
-import NumberTicker from "../NumberTicker";
 import {
   ArrowRight,
   ContainerIcon,
@@ -14,35 +9,114 @@ import {
   ShieldCheck,
   TruckIcon,
   Undo2Icon,
-  Star,
-  StarHalf,
-  Star as EmptyStar,
 } from "lucide-react";
 
+import { fetchProductById } from "../../api";
+import Loader from "../Loader";
+import { calculateDiscount, cn } from "../../lib/utils";
+import NumberTicker from "../NumberTicker";
+
+import Reviews from "./Reviews";
+import RatingStars from "./RatingStars";
+import ErrorLoadingButton from "../ErrorLoadingButton";
+import WarrantyContent from "./WarrantyContent";
+import ShippingContent from "./ShippingContent";
+import SupportContent from "./SupportContent";
+import Modal from "../Modal";
+
+const infoItem = [
+  {
+    label: "Warranty",
+    icon: ShieldCheck,
+    type: "warranty",
+  },
+  {
+    label: "Shipping & Delivery",
+    icon: ContainerIcon,
+    type: "shipping",
+  },
+  {
+    label: "Support",
+    icon: HeadsetIcon,
+    type: "support",
+  },
+];
+
+/**
+ * Renders a detailed view of a single product, including images, pricing, ratings, and reviews.
+ *
+ * @returns A JSX element representing the single product page.
+ */
 export default function SingleProduct() {
   const { id } = useParams({ from: "/product/$id" });
 
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalIcon, setModalIcon] = useState<ReactNode>(null);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalContent, setModalContent] = useState<ReactNode>(null);
 
+  const openModal = (type: "warranty" | "shipping" | "support") => {
+    setIsModalOpen(true);
+    switch (type) {
+      case "warranty":
+        setModalIcon(<ShieldCheck />);
+        setModalTitle("Warranty Information");
+        setModalContent(<WarrantyContent />);
+        break;
+      case "shipping":
+        setModalIcon(<TruckIcon />);
+        setModalTitle("Shipping & Delivery");
+        setModalContent(<ShippingContent />);
+        break;
+      case "support":
+        setModalIcon(<HeadsetIcon />);
+        setModalTitle("Support");
+        setModalContent(<SupportContent />);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalTitle("");
+    setModalContent(null);
+  };
+
+  // Start the discount tag animation when the mouse enters the image area
   const handleMouseEnter = () => {
     setIsAnimating(true);
   };
 
+  // Reset the animation state when the animation ends
   const handleAnimationEnd = () => {
     setIsAnimating(false);
   };
 
+  // Fetch the product data based on the ID from the URL parameters
   const {
     data: product,
     isLoading,
+    refetch,
     error,
   } = useQuery({
     queryKey: ["product", id],
     queryFn: () => fetchProductById(id),
+    retry: 2,
   });
 
   if (isLoading) return <Loader />;
-  if (error) return <div>Error loading product.</div>;
+
+  if (error) {
+    return (
+      <ErrorLoadingButton
+        errorMessage={`Error loading product: ${error.message}`}
+        onRetry={refetch}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto mt-20 px-4 sm:max-w-4xl md:mt-40 md:max-w-5xl md:px-10 xl:max-w-7xl">
@@ -59,6 +133,7 @@ export default function SingleProduct() {
                 className="size-full max-h-[43rem] rounded-2xl object-cover object-center opacity-95 shadow-sm group-hover:opacity-100"
               />
               {product.price > product.discountedPrice && (
+                // Display discount tag with animation if the product is discounted
                 <div
                   className={cn(
                     "absolute right-4 top-4 origin-top transition-none",
@@ -69,11 +144,7 @@ export default function SingleProduct() {
                   onAnimationEnd={handleAnimationEnd}
                 >
                   <div className="relative">
-                    <img
-                      src="/assets/discount_tag.svg"
-                      alt="discount tag"
-                      className=""
-                    />
+                    <img src="/assets/discount_tag.svg" alt="discount tag" />
                     <div className="absolute right-1/2 top-12 translate-x-1/2 -rotate-6 text-white">
                       <div className="flex flex-col whitespace-nowrap text-3xl">
                         <div className="flex">
@@ -84,6 +155,7 @@ export default function SingleProduct() {
                               product?.discountedPrice,
                             )}
                           />
+                          %
                         </div>
                       </div>
                     </div>
@@ -105,41 +177,52 @@ export default function SingleProduct() {
                   </div>
                 )}
                 <p className="flex flex-col pb-8 pt-4 text-3xl font-light">
-                  {product?.price} NOK
+                  {product.discountedPrice < product.price ? (
+                    <>
+                      <span className="text-xl text-destructive line-through">
+                        {product.price.toFixed(2)} NOK
+                      </span>
+                      <span>{product.discountedPrice.toFixed(2)} NOK</span>
+                    </>
+                  ) : (
+                    <span>{product.price.toFixed(2)} NOK</span>
+                  )}
                 </p>
-                <button className="w-full rounded-3xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800">
+
+                <button
+                  aria-label="Add product to cart"
+                  className="w-full rounded-3xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800"
+                >
                   Add to cart
                 </button>
                 <div className="pt-8 text-center font-extralight text-stone-600">
                   <p>Estimate delivery times: 3-6 days (International)</p>
                   <p>
-                    Return within 45 days of purchase. Duties & taxes are
+                    Return within 45 days of purchase. Duties &amp; taxes are
                     non-refundable.
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-6 divide-y py-10 text-stone-600 lg:py-0">
-                <div className="flex w-full items-center justify-between pt-6">
-                  <div className="flex items-center space-x-2">
-                    <ShieldCheck className="size-6" />
-                    <p className="">Warranty</p>
+
+              <div className="flex flex-col divide-y py-10 text-stone-600 lg:py-0">
+                {infoItem.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex w-full cursor-pointer items-center justify-between py-6 transition-all duration-200 hover:text-primary"
+                    onClick={() => openModal(item.type as any)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") openModal(item.type as any);
+                    }}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <item.icon className="h-6 w-6" />
+                      <p>{item.label}</p>
+                    </div>
+                    <ArrowRight className="h-5 w-5" />
                   </div>
-                  <ArrowRight className="size-5" />
-                </div>
-                <div className="flex w-full items-center justify-between pt-6">
-                  <div className="flex items-center space-x-2">
-                    <ContainerIcon className="size-6" />
-                    <p className="">Shipping & delivery</p>
-                  </div>
-                  <ArrowRight className="size-5" />
-                </div>
-                <div className="flex w-full items-center justify-between pt-6">
-                  <div className="flex items-center space-x-2">
-                    <HeadsetIcon className="size-6" />
-                    <p className="">Support</p>
-                  </div>
-                  <ArrowRight className="size-5" />
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -181,58 +264,20 @@ export default function SingleProduct() {
               </div>
             </div>
           </div>
-          {product.reviews.length > 0 && (
-            <div className="p-10">reviews here</div>
+          {product?.reviews?.length > 0 && (
+            // Render the Reviews component if there are reviews
+            <Reviews reviews={product.reviews} />
           )}
         </>
       )}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={modalTitle}
+        icon={modalIcon}
+      >
+        {modalContent}
+      </Modal>
     </div>
   );
-}
-
-interface RatingStarsProps {
-  rating: number; // The rating to render
-}
-
-function RatingStars({ rating }: RatingStarsProps) {
-  // To round the rating to the nearest half for rendering purposes
-  const roundedRating = Math.round(rating * 2) / 2;
-
-  const renderStars = () => {
-    const stars = [];
-
-    // Generates the stars based on the rounded rating
-    for (let i = 1; i <= 5; i++) {
-      if (i <= roundedRating) {
-        stars.push(
-          <Star
-            key={i}
-            className="inline size-5 fill-yellow-500 text-primary"
-          />,
-        );
-      } else if (i - 0.5 === roundedRating) {
-        stars.push(
-          <div className="relative inline-flex">
-            <StarHalf
-              key={i}
-              className="inline size-5 fill-yellow-500 text-primary"
-              strokeWidth={1.5}
-            />
-            <EmptyStar
-              key={i}
-              className="absolute inset-0 inline size-5 text-primary"
-            />
-          </div>,
-        );
-      } else {
-        stars.push(
-          <EmptyStar key={i} className="inline size-5 text-primary" />,
-        );
-      }
-    }
-
-    return stars;
-  };
-
-  return <div className="flex">{renderStars()}</div>;
 }
