@@ -155,7 +155,6 @@ export default function SingleProduct() {
                               product?.discountedPrice,
                             )}
                           />
-                          %
                         </div>
                       </div>
                     </div>

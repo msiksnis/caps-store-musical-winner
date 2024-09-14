@@ -72,7 +72,7 @@ export default function Modal({
       onClick={handleOverlayClick}
     >
       <div
-        className="relative min-h-96 w-full max-w-2xl rounded-2xl bg-card p-6 shadow-lg"
+        className="relative mt-10 min-h-96 w-full max-w-2xl rounded-2xl bg-card p-6 shadow-lg"
         role="document"
       >
         <button
