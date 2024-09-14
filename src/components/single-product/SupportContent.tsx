@@ -2,7 +2,7 @@ import SupportForm from "./SupportForm";
 
 export default function SupportContent() {
   return (
-    <div className="space-y-4 text-pretty font-light">
+    <div className="space-y-4 text-pretty pb-4 font-light">
       <p>Get in touch with our team today</p>
       <p className="text-balance">
         Need any help? Send us a message using the form below and we&apos;ll get
