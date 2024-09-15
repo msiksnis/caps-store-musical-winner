@@ -14,6 +14,7 @@ interface CartState {
   getItemQuantity: (productId: string) => number;
 }
 
+// Loads the cart from localStorage
 const loadCartFromLocalStorage = (): CartItem[] => {
   try {
     const cartItems = localStorage.getItem("cart");
@@ -24,6 +25,7 @@ const loadCartFromLocalStorage = (): CartItem[] => {
   }
 };
 
+// Saves the cart to localStorage
 const saveCartToLocalStorage = (cartItems: CartItem[]) => {
   try {
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -53,6 +55,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ cartItems: newCartItems });
     saveCartToLocalStorage(newCartItems);
   },
+  // Removes an item from the cart by filtering out the item with the given productId
   removeFromCart: (productId) => {
     const newCartItems = get().cartItems.filter(
       (item) => item.id !== productId,
@@ -60,18 +63,21 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ cartItems: newCartItems });
     saveCartToLocalStorage(newCartItems);
   },
+  // Clears the cart by setting cartItems to an empty array
   clearCart: () => {
     set({ cartItems: [] });
     saveCartToLocalStorage([]);
   },
+  // Updates the quantity of an item in the cart
   updateQuantity: (productId, quantity) => {
-    if (quantity < 1) return; // Prevent zero or negative quantities
+    if (quantity < 1) return; // To prevent zero or negative quantities
     const newCartItems = get().cartItems.map((item) =>
       item.id === productId ? { ...item, quantity } : item,
     );
     set({ cartItems: newCartItems });
     saveCartToLocalStorage(newCartItems);
   },
+  // Returns the quantity of an item in the cart
   getItemQuantity: (productId) => {
     const item = get().cartItems.find((item) => item.id === productId);
     return item ? item.quantity : 0;
