@@ -38,7 +38,7 @@ export default function CartPage() {
             <tbody>
               {cartItems.map((item) => (
                 <tr key={item.id} className="border-b">
-                  <td className="max-w-1/2 items-center gap-4 py-2 md:flex">
+                  <td className="max-w-1/2 flex items-center gap-2 py-2 md:gap-4">
                     <img
                       src={item.image.url}
                       alt={item.image.alt}
@@ -46,7 +46,7 @@ export default function CartPage() {
                     />
                     <Link
                       to={`/product/${item.id}`}
-                      className="hover:underline md:text-lg"
+                      className="underline-offset-2 hover:underline md:text-lg"
                     >
                       {item.title}
                     </Link>
