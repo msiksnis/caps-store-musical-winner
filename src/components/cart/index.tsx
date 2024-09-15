@@ -72,9 +72,12 @@ export default function CartPage() {
             </p>
           </div>
           <div className="flex justify-end pb-10 md:mt-10">
-            <button className="rounded-xl bg-primary px-14 py-2 text-white transition-all duration-200 hover:bg-gray-900">
+            <Link
+              to="/checkout"
+              className="rounded-full bg-primary px-14 py-2 text-white transition-all duration-200 hover:bg-gray-900"
+            >
               Checkout
-            </button>
+            </Link>
           </div>
         </>
       )}
