@@ -1,17 +1,9 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Loader from "../components/Loader";
 import Footer from "../components/Footer";
-
-const TanStackRouterDevtools =
-  process.env.NODE_ENV === "production"
-    ? () => null
-    : React.lazy(() =>
-        import("@tanstack/router-devtools").then((res) => ({
-          default: res.TanStackRouterDevtools,
-        })),
-      );
+import { ScrollRestoration } from "@tanstack/react-router";
 
 export const Route = createRootRoute({
   component: () => (
@@ -20,12 +12,10 @@ export const Route = createRootRoute({
       <Suspense fallback={<Loader />}>
         <main className="flex-1">
           <Outlet />
+          <ScrollRestoration />
         </main>
         <Footer />
       </Suspense>
-      {/* <Suspense>
-        <TanStackRouterDevtools />
-      </Suspense> */}
     </div>
   ),
 });

@@ -1,5 +1,9 @@
 {
-  "name": "vite-react-19",
+  "name": "js-frameworks-ca",
+  "author": {
+    "name": "Martins Siksnis",
+    "email": "devmarty@gmail.com"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
