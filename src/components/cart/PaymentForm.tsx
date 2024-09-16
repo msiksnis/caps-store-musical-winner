@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -6,13 +7,11 @@ import toast from "react-hot-toast";
 import { cn } from "../../lib/utils";
 import { useCartStore } from "../../stores/cartStore";
 import { useNavigate } from "@tanstack/react-router";
-import {
-  ChevronsDownUpIcon,
-  ChevronsUpDownIcon,
-  LoaderCircleIcon,
-} from "lucide-react";
-import { useState } from "react";
+import { ChevronsUpDownIcon, LoaderCircleIcon } from "lucide-react";
 
+/**
+ * Schema for form validation using Zod
+ */
 const checkoutSchema = z.object({
   firstName: z.string().min(3, "Required"),
   lastName: z.string().min(3, "Required"),
@@ -24,31 +23,75 @@ const checkoutSchema = z.object({
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
+/**
+ * PaymentForm component handles user input, validates data, and processes payment with Stripe.
+ */
 export default function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
   const clearCart = useCartStore((state) => state.clearCart);
+  const [loading, setLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  /**
+   * React Hook Form setup with Zod validation.
+   */
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
   });
 
+  /**
+   * List of available countries to select in the dropdown.
+   */
+  const countries = [
+    { label: "Norway", value: "NO" },
+    { label: "Sweden", value: "SE" },
+    { label: "Denmark", value: "DK" },
+    { label: "Finland", value: "FI" },
+  ];
+
+  /**
+   * Get total price from the cart and format it to 2 decimal places.
+   */
   const totalAmount = getTotalPrice().toFixed(2);
 
+  // To watch for the selected country
+  const selectedCountry = watch("country", "NO");
+
+  /**
+   * To handle the selection of a country from the dropdown.
+   */
+  const handleSelect = (country: { label: string; value: string }) => {
+    setValue("country", country.value); // Update form value directly
+    setIsDropdownOpen(false);
+  };
+
+  /**
+   * Handles the submission of the payment form.
+   * Sends the payment request to Stripe and handles responses.
+   * @param {CheckoutFormData} data - The validated form data.
+   */
   const paymentHandler = async (data: CheckoutFormData) => {
     if (!stripe || !elements) return;
+
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      toast.error("Please enter your card details.");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const amount = Math.round(getTotalPrice() * 100); // Convert to the smallest currency unit (cents)
+      const amount = Math.round(getTotalPrice() * 100); // Converts to smallest currency unit
       const response = await fetch(
         "/.netlify/functions/create-payment-intent",
         {
@@ -56,7 +99,7 @@ export default function PaymentForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ amount }), // Pass the dynamic amount
+          body: JSON.stringify({ amount }),
         },
       ).then((res) => res.json());
 
@@ -66,7 +109,7 @@ export default function PaymentForm() {
 
       const paymentResult = await stripe.confirmCardPayment(client_secret, {
         payment_method: {
-          card: elements.getElement(CardElement)!,
+          card: cardElement,
           billing_details: {
             name: `${data.firstName} ${data.lastName}`,
             email: data.email,
@@ -88,7 +131,6 @@ export default function PaymentForm() {
         navigate({ to: "/purchase-complete" });
       }
     } catch (error) {
-      console.error("Error processing payment", error);
       toast.error("An error occurred during payment. Please try again.");
     } finally {
       setLoading(false);
@@ -96,176 +138,202 @@ export default function PaymentForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(paymentHandler)}
-      className="mx-auto mt-14 max-w-xl rounded-lg bg-card p-8 px-4 md:mt-32 md:px-10"
-    >
-      {/* User Details Inputs */}
-      <div className="mt-8 flex h-full flex-col gap-8">
-        <div className="flex gap-4">
-          {/* First Name */}
+    <div className="mx-auto mt-14 max-w-xl p-8 px-4 md:mt-32 md:px-10">
+      <h1 className="mb-2 text-3xl md:text-4xl">Checkout</h1>
+      <p className="mb-8 text-pretty text-lg font-light leading-6 text-gray-600">
+        Please enter your details to complete the payment.
+      </p>
+      <form onSubmit={handleSubmit(paymentHandler)} aria-disabled={loading}>
+        {/* User Details Inputs */}
+        <div className="mt-8 flex h-full flex-col gap-8">
+          <div className="flex gap-4">
+            {/* First Name */}
+            <div className="relative flex-1">
+              <input
+                id="firstName"
+                type="text"
+                aria-label="First name"
+                placeholder="First name"
+                className={cn(
+                  "w-full rounded-lg border border-gray-200 bg-card px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600 focus:border-muted-foreground",
+                  { "border-red-500": errors.firstName },
+                )}
+                {...register("firstName")}
+              />
+              {errors.firstName && (
+                <div className="absolute -bottom-6 left-0 text-sm text-red-500">
+                  {errors.firstName.message}
+                </div>
+              )}
+            </div>
+            {/* Last Name */}
+            <div className="relative flex-1">
+              <input
+                id="lastName"
+                type="text"
+                aria-label="Last name"
+                placeholder="Last name"
+                className={cn(
+                  "w-full rounded-lg border border-gray-200 bg-card px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600 focus:border-muted-foreground",
+                  { "border-red-500": errors.lastName },
+                )}
+                {...register("lastName")}
+              />
+              {errors.lastName && (
+                <div className="absolute -bottom-6 left-0 text-sm text-red-500">
+                  {errors.lastName.message}
+                </div>
+              )}
+            </div>
+          </div>
+          {/* Email */}
           <div className="relative flex-1">
             <input
-              id="firstName"
-              type="text"
-              placeholder="First name"
+              id="email"
+              type="email"
+              aria-label="Email"
+              placeholder="Email"
               className={cn(
-                "w-full rounded-xl border border-gray-100 bg-gray-100 px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600",
-                { "border-red-500": errors.firstName },
+                "w-full rounded-lg border border-gray-200 bg-card px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600 focus:border-muted-foreground",
+                { "border-red-500": errors.email },
               )}
-              {...register("firstName")}
+              {...register("email")}
             />
-            {errors.firstName && (
+            {errors.email && (
               <div className="absolute -bottom-6 left-0 text-sm text-red-500">
-                {errors.firstName.message}
+                {errors.email.message}
               </div>
             )}
           </div>
-          {/* Last Name */}
+
+          {/* Address */}
           <div className="relative flex-1">
             <input
-              id="lastName"
+              id="address"
               type="text"
-              placeholder="Last name"
+              aria-label="Address"
+              placeholder="Address"
               className={cn(
-                "w-full rounded-xl border border-gray-100 bg-gray-100 px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600",
-                { "border-red-500": errors.lastName },
+                "w-full rounded-lg border border-gray-200 bg-card px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600 focus:border-muted-foreground",
+                { "border-red-500": errors.address },
               )}
-              {...register("lastName")}
+              {...register("address")}
             />
-            {errors.lastName && (
+            {errors.address && (
               <div className="absolute -bottom-6 left-0 text-sm text-red-500">
-                {errors.lastName.message}
+                {errors.address.message}
               </div>
             )}
           </div>
-        </div>
-        {/* Email */}
-        <div className="relative flex-1">
-          <input
-            id="email"
-            type="email"
-            placeholder="Email"
-            className={cn(
-              "w-full rounded-xl border border-gray-100 bg-gray-100 px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600",
-              { "border-red-500": errors.email },
-            )}
-            {...register("email")}
-          />
-          {errors.email && (
-            <div className="absolute -bottom-6 left-0 text-sm text-red-500">
-              {errors.email.message}
-            </div>
-          )}
-        </div>
 
-        {/* Address */}
-        <div className="relative flex-1">
-          <input
-            id="address"
-            type="text"
-            placeholder="Address"
-            className={cn(
-              "w-full rounded-xl border border-gray-100 bg-gray-100 px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600",
-              { "border-red-500": errors.address },
+          {/* Post code */}
+          <div className="relative flex-1">
+            <input
+              id="postCode"
+              type="text"
+              aria-label="Post code"
+              placeholder="Post Code"
+              className={cn(
+                "w-full rounded-lg border border-gray-200 bg-card px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600 focus:border-muted-foreground",
+                { "border-red-500": errors.postCode },
+              )}
+              {...register("postCode")}
+            />
+            {errors.postCode && (
+              <div className="absolute -bottom-6 left-0 text-sm text-red-500">
+                {errors.postCode.message}
+              </div>
             )}
-            {...register("address")}
-          />
-          {errors.address && (
-            <div className="absolute -bottom-6 left-0 text-sm text-red-500">
-              {errors.address.message}
-            </div>
-          )}
-        </div>
+          </div>
 
-        {/* Post code */}
-        <div className="relative flex-1">
-          <input
-            id="postCode"
-            type="text"
-            placeholder="Post Code"
-            className={cn(
-              "w-full rounded-xl border border-gray-100 bg-gray-100 px-4 py-2.5 text-primary shadow-sm outline-none placeholder:text-gray-600",
-              { "border-red-500": errors.postCode },
+          {/* Country Dropdown */}
+          <div className="relative flex-1">
+            <div
+              aria-label="Open country selection"
+              className={cn(
+                "w-full cursor-pointer rounded-lg border border-gray-200 bg-card px-4 py-2.5 text-primary shadow-sm outline-none",
+                { "border-red-500": errors.country },
+              )}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              {countries.find((c) => c.value === selectedCountry)?.label}
+              <ChevronsUpDownIcon
+                className="pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 transform text-muted-foreground"
+                strokeWidth={1.5}
+              />
+            </div>
+            {isDropdownOpen && (
+              <div className="absolute left-0 z-10 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
+                {countries.map((country) => (
+                  <div
+                    aria-label={`Select ${country.label}`}
+                    key={country.value}
+                    className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                    onClick={() => handleSelect(country)}
+                  >
+                    {country.label}
+                  </div>
+                ))}
+              </div>
             )}
-            {...register("postCode")}
-          />
-          {errors.postCode && (
-            <div className="absolute -bottom-6 left-0 text-sm text-red-500">
-              {errors.postCode.message}
-            </div>
-          )}
-        </div>
-
-        {/* Country */}
-        <div className="relative flex-1">
-          <select
-            id="country"
-            className={cn(
-              "w-full cursor-pointer appearance-none rounded-xl border border-gray-100 bg-gray-100 px-4 py-2.5 text-primary shadow-sm outline-none",
-              { "border-red-500": errors.country },
+            {errors.country && (
+              <div className="absolute -bottom-6 left-0 text-sm text-red-500">
+                {errors.country.message}
+              </div>
             )}
-            {...register("country")}
-          >
-            <option value="NO">Norway</option>
-            <option value="SE">Sweden</option>
-            <option value="DK">Denmark</option>
-            <option value="FI">Finland</option>
-          </select>
-          <ChevronsUpDownIcon
-            className="absolute right-4 top-1/2 size-5 -translate-y-1/2 transform text-muted-foreground"
-            strokeWidth={1.5}
-          />
-          {errors.country && (
-            <div className="absolute -bottom-6 left-0 text-sm text-red-500">
-              {errors.country.message}
-            </div>
-          )}
-        </div>
+            {/* Hidden input to pass the value to form */}
+            <input
+              type="hidden"
+              {...register("country")}
+              value={selectedCountry}
+            />
+          </div>
 
-        {/* Card Element */}
-        <div className="relative flex-1">
-          <div className="rounded-lg border p-3">
-            <CardElement
-              id="card-element"
-              options={{
-                style: {
-                  base: {
-                    fontSize: "16px",
-                    color: "#495057",
-                    "::placeholder": {
-                      color: "#6c757d",
+          {/* Card Element */}
+          <div className="relative flex-1">
+            <div className="rounded-lg border p-3">
+              <CardElement
+                id="card-element"
+                options={{
+                  style: {
+                    base: {
+                      fontSize: "16px",
+                      color: "#495057",
+                      "::placeholder": {
+                        color: "#6c757d",
+                      },
                     },
                   },
-                },
-                hidePostalCode: true,
-              }}
-            />
+                  hidePostalCode: true,
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="mt-8 flex items-center justify-between">
-        {/* Display total amount */}
-        <p className="text-xl font-semibold text-primary">
-          Total: {totalAmount} NOK
-        </p>
+        <div className="mt-8 flex items-center justify-between">
+          {/* Display total amount */}
+          <p className="text-xl font-semibold text-primary">
+            Total: {totalAmount} NOK
+          </p>
 
-        <button
-          type="submit"
-          disabled={loading || !stripe || !elements}
-          className="rounded-lg bg-primary px-10 py-2.5 font-semibold text-white shadow-sm transition-all hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {loading ? (
-            <div className="flex items-center gap-2">
-              <LoaderCircleIcon className="size-4 animate-spin" />
-              Paying...
-            </div>
-          ) : (
-            "Pay Now"
-          )}
-        </button>
-      </div>
-    </form>
+          <button
+            type="submit"
+            aria-label="Pay now"
+            disabled={loading || !stripe || !elements}
+            className="rounded-lg bg-primary px-10 py-2.5 font-semibold text-white shadow-sm transition-all hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <LoaderCircleIcon className="size-4 animate-spin" />
+                Paying...
+              </div>
+            ) : (
+              "Pay Now"
+            )}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

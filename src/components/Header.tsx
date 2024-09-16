@@ -40,7 +40,7 @@ export default function Header() {
           >
             All Products
           </Link>
-          <Link
+          {/* <Link
             to="/about"
             className={cn(
               "opacity-85 transition-all duration-200 hover:opacity-100",
@@ -57,7 +57,7 @@ export default function Header() {
             )}
           >
             FAQ
-          </Link>
+          </Link> */}
           <Link
             to="/contact"
             className={cn(
@@ -142,7 +142,7 @@ function MobileMenu({ isOpen, closeMenu, totalQuantity }: MobileMenuProps) {
         >
           All Products
         </Link>
-        <Link
+        {/* <Link
           to="/about"
           className="underline-offset-4 [&.active]:underline"
           onClick={closeMenu}
@@ -155,7 +155,7 @@ function MobileMenu({ isOpen, closeMenu, totalQuantity }: MobileMenuProps) {
           onClick={closeMenu}
         >
           FAQ
-        </Link>
+        </Link> */}
         <Link
           to="/contact"
           className="underline-offset-4 [&.active]:underline"

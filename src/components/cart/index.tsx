@@ -55,8 +55,11 @@ export default function CartPage() {
                     {item.discountedPrice.toFixed(2)}
                   </td>
                   <td className="py-2 text-center">
-                    <button onClick={() => removeFromCart(item.id)}>
-                      <Trash2Icon className="mt-1 size-5 text-destructive" />
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="rounded-md p-2 transition-all duration-200 hover:bg-red-50"
+                    >
+                      <Trash2Icon className="size-5 text-destructive" />
                     </button>
                   </td>
                 </tr>
@@ -74,7 +77,7 @@ export default function CartPage() {
           <div className="flex justify-end pb-10 md:mt-10">
             <Link
               to="/checkout"
-              className="rounded-full bg-primary px-14 py-2 text-white transition-all duration-200 hover:bg-gray-900"
+              className="rounded-full bg-primary px-14 py-4 text-white transition-all duration-200 hover:bg-gray-800 md:px-20"
             >
               Checkout
             </Link>

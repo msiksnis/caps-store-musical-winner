@@ -36,7 +36,7 @@ export default function FilterButtons({
         {/* All Products Button */}
         <button
           className={cn(
-            "group relative overflow-hidden rounded-full border border-primary px-6 py-2 text-primary shadow-sm hover:text-white md:px-10",
+            "group relative overflow-hidden rounded-full border border-primary px-6 py-2 text-primary shadow-sm hover:text-white md:px-10 md:py-2.5",
             {
               "border-primary bg-primary text-white shadow-md hover:bg-primary":
                 !filter,
@@ -54,7 +54,7 @@ export default function FilterButtons({
           <button
             key={option}
             className={cn(
-              "group relative overflow-hidden rounded-full border border-primary px-6 py-2 text-primary shadow-sm hover:text-white md:px-10",
+              "group relative overflow-hidden rounded-full border border-primary px-6 py-2 text-primary shadow-sm hover:text-white md:px-10 md:py-2.5",
               {
                 "border-primary bg-primary text-white shadow-md hover:bg-primary":
                   filter === option,
@@ -73,7 +73,7 @@ export default function FilterButtons({
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         className={cn(
-          "mt-4 h-10 w-full cursor-pointer rounded-full border pl-8 outline-none transition-all duration-200 focus:cursor-text focus:text-primary focus:placeholder:opacity-100 sm:mt-0 sm:size-10 sm:border-transparent sm:p-2 sm:pl-0 sm:placeholder:opacity-0 focus:sm:w-40 focus:sm:pl-4 focus:md:w-72",
+          "mt-4 h-10 w-full cursor-pointer rounded-full border pl-8 outline-none transition-all duration-200 focus:cursor-text focus:text-primary focus:placeholder:opacity-100 sm:mt-0 sm:size-10 sm:border-transparent sm:p-2 sm:pl-0 sm:placeholder:opacity-0 focus:sm:w-40 focus:sm:pl-4 md:h-12 focus:md:w-72",
           {
             "border-b border-gray-400 text-primary sm:w-40 sm:border-gray-400 sm:pl-4 md:w-72":
               searchTerm,
