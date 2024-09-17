@@ -1,5 +1,5 @@
 const { Resend } = require("resend");
-const ContactMeTemplate = require("./email-template").default;
+const { ContactMeTemplate } = require("./email-template");
 
 // Initialize Resend with your API key
 const resend = new Resend(process.env.RESEND_API_KEY);

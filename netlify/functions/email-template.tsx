@@ -19,7 +19,7 @@ interface ContactMeTemplateProps {
   message?: string;
 }
 
-const ContactMeTemplate = ({
+export const ContactMeTemplate = ({
   fullName,
   subject,
   email,
@@ -48,8 +48,6 @@ const ContactMeTemplate = ({
     </Html>
   );
 };
-
-export default ContactMeTemplate;
 
 const main = {
   backgroundColor: "#ffffff",
