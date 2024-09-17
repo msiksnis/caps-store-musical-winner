@@ -1,17 +1,16 @@
-import { Resend } from "resend";
-import ContactMeTemplate from "../../src/components/contact/email/email-template";
-// import dotenv from "dotenv";
+const { Resend } = require("resend");
+const ContactMeTemplate =
+  require("../../src/components/contact/email/email-template").default;
 
-// This loads environment variables from your .env file
-// dotenv.config();
-
+// Initialize Resend with your API key
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const handler = async (event) => {
+exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
     const { fullName } = body;
 
+    // Send email using Resend API
     const data = await resend.emails.send({
       from: `${fullName} <email@mail.devmarty.com>`,
       to: ["msiksnis@gmail.com"],
@@ -24,6 +23,7 @@ export const handler = async (event) => {
       body: JSON.stringify({ data }),
     };
   } catch (error) {
+    console.error("Error occurred:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),

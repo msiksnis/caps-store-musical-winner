@@ -19,7 +19,7 @@ interface ContactMeTemplateProps {
   message?: string;
 }
 
-export const ContactMeTemplate = ({
+const ContactMeTemplate = ({
   fullName,
   subject,
   email,
