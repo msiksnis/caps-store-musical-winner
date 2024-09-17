@@ -1,8 +1,9 @@
 import { Resend } from "resend";
 import ContactMeTemplate from "../../src/components/contact/email/email-template";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
-dotenv.config(); // This loads environment variables from your .env file
+// This loads environment variables from your .env file
+// dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
