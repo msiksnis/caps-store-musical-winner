@@ -37,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <img
         src={product.image.url}
         alt={product.image.alt}
-        className="aspect-[3/4] rounded-2xl object-cover opacity-95 group-hover:opacity-100"
+        className="aspect-[3/4] rounded-2xl object-cover opacity-95 transition-all duration-200 group-hover:opacity-100"
       />
       <div className="flex items-center justify-between py-4 text-lg font-light md:text-xl">
         <h2>{product.title}</h2>
