@@ -291,6 +291,12 @@ export default function PaymentForm() {
 
           {/* Card Element */}
           <div className="relative flex-1">
+            <div className="mb-2">
+              <strong>Use Stripe test card details!</strong>
+              <p className="">Card number: 4242 4242 4242 4242</p>
+              <p className="">Expiry: Any future date</p>
+              <p className="">CVC: Any 3 digits</p>
+            </div>
             <div className="rounded-lg border p-3">
               <CardElement
                 id="card-element"
