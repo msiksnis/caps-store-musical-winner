@@ -16,5 +16,9 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "vite-env.d.ts", "netlify/functions/email-template.cjs"]
+  "include": [
+    "src",
+    "vite-env.d.ts",
+    "src/components/contact/email/email-template.tsx"
+  ]
 }
