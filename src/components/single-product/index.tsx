@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import {
   ArrowRight,
   ContainerIcon,
@@ -23,7 +23,6 @@ import WarrantyContent from "./WarrantyContent";
 import ShippingContent from "./ShippingContent";
 import SupportContent from "./SupportContent";
 import Modal from "../Modal";
-import DiscountTag from "../DiscountTag";
 import { blurInVariants } from "../../lib/utils";
 import { useCartStore } from "../../stores/cartStore";
 
@@ -83,8 +82,6 @@ export default function SingleProduct() {
   const quantityInCart = useCartStore(
     (state) => state.cartItems.find((item) => item.id === id)?.quantity || 0,
   );
-
-  const navigate = useNavigate();
 
   // Fetch the product data based on the ID from the URL parameters
   const {

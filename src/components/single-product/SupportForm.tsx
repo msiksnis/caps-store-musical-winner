@@ -1,7 +1,9 @@
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircleIcon } from "lucide-react";
 
 import { cn } from "../../lib/utils";
 
@@ -34,6 +36,7 @@ const supportFormSchema = z.object({
  * )
  */
 export default function SupportForm() {
+  const [loading, setLoading] = useState(false);
   // Initialize react-hook-form with Zod schema resolver
   const {
     register,
@@ -46,16 +49,44 @@ export default function SupportForm() {
 
   /**
    * Handles form submission.
-   * For now, it simply logs the form data and displays a success toast.
-   * Console.log can be replaced with actual API calls to handle form data.
+   * It sends the form data to the Netlify serverless function for sending an email.
+   * It displays a success toast if the email is sent successfully.
+   * It displays an error toast if the email fails to send.
+   * It also logs the form data to the console.
    *
-   * @param {FormProps} data - The form data containing fullName, subject, email, and message.
+   * @param {FormProps} data - The form data containing fullName, email, and message.
    */
   const onSubmit = async (data: FormProps) => {
     console.log(data);
 
-    toast.success("Your message was sent successfully!");
-    reset(); // Reset the form after submission
+    setLoading(true);
+
+    try {
+      const response = await fetch("/.netlify/functions/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("An error occurred while sending the message");
+      }
+
+      toast.success("Your message was sent successfully!");
+      reset(); // Reset the form after submission;
+    } catch (error) {
+      if (typeof error === "string") {
+        toast.error(error);
+      } else if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unknown error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,7 +94,7 @@ export default function SupportForm() {
       className="mt-8 flex h-full flex-col gap-8"
       onSubmit={handleSubmit(onSubmit)}
     >
-      {/* Full Name and Subject Fields */}
+      {/* Full Name Field */}
       <div className="flex flex-col gap-8 md:flex-row md:gap-4">
         <div className="relative flex-1">
           <label htmlFor="fullName" className="sr-only">
@@ -129,8 +160,18 @@ export default function SupportForm() {
       </div>
 
       {/* Submit Button */}
-      <button className="w-full rounded-xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800">
-        Send Message
+      <button
+        className="w-full rounded-xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800 disabled:opacity-50"
+        disabled={loading}
+      >
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <LoaderCircleIcon className="mr-2 size-5 animate-spin" />
+            Sending...
+          </div>
+        ) : (
+          "Send Message"
+        )}
       </button>
     </form>
   );
