@@ -1,6 +1,4 @@
-// /src/components/contact/email/email-template.tsx
-
-import {
+const {
   Body,
   Container,
   Head,
@@ -9,22 +7,9 @@ import {
   Row,
   Section,
   Text,
-} from "@react-email/components";
-import * as React from "react";
+} = require("@react-email/components");
 
-interface ContactMeTemplateProps {
-  fullName?: string;
-  subject?: string;
-  email?: string;
-  message?: string;
-}
-
-export const ContactMeTemplate = ({
-  fullName,
-  subject,
-  email,
-  message,
-}: ContactMeTemplateProps) => {
+const ContactMeTemplate = ({ fullName, subject, email, message }) => {
   const previewText = `${fullName}': ${subject}`;
 
   return (
@@ -48,6 +33,9 @@ export const ContactMeTemplate = ({
     </Html>
   );
 };
+
+// This is necessary to export it in CommonJS format
+module.exports = { ContactMeTemplate };
 
 const main = {
   backgroundColor: "#ffffff",
