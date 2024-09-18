@@ -8,6 +8,7 @@ import { fetchProducts } from "../../api";
 import { Route } from "../../routes";
 import ErrorLoadingButton from "../ErrorLoadingButton";
 import { blurInVariants } from "../../lib/utils";
+import { useSEO } from "../../hooks/useSEO";
 
 interface AllProductsProps {
   /** The current search term used to filter products */
@@ -37,6 +38,18 @@ export default function AllProducts({ searchTerm }: AllProductsProps) {
     queryKey: ["products", { filter }],
     queryFn: () => fetchProducts(filter || undefined),
     retry: 2,
+  });
+
+  // SEO hook to update the page title and meta
+  useSEO({
+    title: `Cap's Store ${filter ? ` | ${filter.replace("-", " ").toUpperCase()}` : ""}`,
+    description: `Explore our ${filter ? filter.replace("-", " ") : ""} range of products. ${searchTerm ? `Search results for "${searchTerm}"` : ""}.`,
+    keywords: `caps, store, products, ${filter || "shopping"}, ${searchTerm || "all products"}`,
+    currentPath: window.location.pathname,
+    ogTitle: `Cap's Store${filter ? ` | ${filter.replace("-", " ").toUpperCase()}` : ""}`,
+    ogDescription: `Discover our wide range of products in ${filter || "all categories"}.`,
+    ogImage: "/assets/logo.png",
+    ogUrl: window.location.href,
   });
 
   // Display loader while data is being fetched

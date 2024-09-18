@@ -9,6 +9,7 @@ import { useCartStore } from "../../stores/cartStore";
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronsUpDownIcon, LoaderCircleIcon } from "lucide-react";
 import { Button } from "../Button";
+import { useSEO } from "../../hooks/useSEO";
 
 /**
  * Schema for form validation using Zod
@@ -35,6 +36,20 @@ export default function PaymentForm() {
   const clearCart = useCartStore((state) => state.clearCart);
   const [loading, setLoading] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Sets SEO properties for the Checkout page
+  useSEO({
+    title: "Cap's Store | Checkout",
+    description:
+      "Complete your purchase at Cap's Store. Enter your details to finish the checkout process.",
+    keywords: "Cap's Store, Checkout, Online Shopping",
+    currentPath: "/checkout",
+    ogTitle: "Cap's Store | Checkout",
+    ogDescription:
+      "Complete your purchase at Cap's Store. Enter your details to finish the checkout process.",
+    ogImage: "/assets/logo.png",
+    ogUrl: window.location.href,
+  });
 
   /**
    * React Hook Form setup with Zod validation.

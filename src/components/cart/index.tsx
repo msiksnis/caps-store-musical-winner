@@ -3,10 +3,22 @@ import { Link } from "@tanstack/react-router";
 import { useCartStore } from "../../stores/cartStore";
 import { Trash2Icon } from "lucide-react";
 import { Button } from "../Button";
+import { useSEO } from "../../hooks/useSEO";
 
 export default function CartPage() {
   const cartItems = useCartStore((state) => state.cartItems);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
+
+  // Sets SEO properties for the Cart page
+  useSEO({
+    title: "Cap's Store | Shopping Cart",
+    description: "Review the items in your cart at Cap's Store.",
+    keywords: "Cap's Store, Shopping Cart, Products, Checkout",
+    currentPath: "/cart",
+    ogTitle: "Cap's Store | Shopping Cart",
+    ogDescription: "Review the items in your cart at Cap's Store.",
+    ogImage: "/assets/logo.png",
+  });
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.discountedPrice * item.quantity,

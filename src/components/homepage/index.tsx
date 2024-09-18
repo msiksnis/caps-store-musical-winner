@@ -46,6 +46,17 @@ export default function Home() {
     [navigate],
   );
 
+  /**
+   * Formats the filter string to be more readable.
+   * @param {string} filter - The filter string to format.
+   */
+  const formatFilter = (filter: string) => {
+    return filter
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
   return (
     <div className="mx-auto px-4 sm:max-w-4xl md:max-w-5xl md:px-10 xl:max-w-7xl">
       <HeadingSection />
