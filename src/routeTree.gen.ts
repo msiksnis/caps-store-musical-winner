@@ -12,11 +12,9 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as PurchaseCompleteImport } from './routes/purchase-complete'
-import { Route as FaqImport } from './routes/faq'
 import { Route as ContactImport } from './routes/contact'
 import { Route as CheckoutImport } from './routes/checkout'
 import { Route as CartImport } from './routes/cart'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProductIdImport } from './routes/product/$id'
 
@@ -24,11 +22,6 @@ import { Route as ProductIdImport } from './routes/product/$id'
 
 const PurchaseCompleteRoute = PurchaseCompleteImport.update({
   path: '/purchase-complete',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const FaqRoute = FaqImport.update({
-  path: '/faq',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -44,11 +37,6 @@ const CheckoutRoute = CheckoutImport.update({
 
 const CartRoute = CartImport.update({
   path: '/cart',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AboutRoute = AboutImport.update({
-  path: '/about',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -73,13 +61,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/cart': {
       id: '/cart'
       path: '/cart'
@@ -99,13 +80,6 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactImport
-      parentRoute: typeof rootRoute
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqImport
       parentRoute: typeof rootRoute
     }
     '/purchase-complete': {
@@ -129,11 +103,9 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AboutRoute,
   CartRoute,
   CheckoutRoute,
   ContactRoute,
-  FaqRoute,
   PurchaseCompleteRoute,
   ProductIdRoute,
 })
@@ -147,20 +119,15 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
         "/cart",
         "/checkout",
         "/contact",
-        "/faq",
         "/purchase-complete",
         "/product/$id"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/about": {
-      "filePath": "about.tsx"
     },
     "/cart": {
       "filePath": "cart.tsx"
@@ -170,9 +137,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/contact": {
       "filePath": "contact.tsx"
-    },
-    "/faq": {
-      "filePath": "faq.tsx"
     },
     "/purchase-complete": {
       "filePath": "purchase-complete.tsx"
