@@ -183,7 +183,7 @@ export default function SingleProduct() {
                     <RatingStars rating={product.rating} />
                   </div>
                 )}
-                <p className="flex flex-col pb-8 pt-4 text-3xl font-light">
+                <div className="flex flex-col pb-8 pt-4 text-3xl font-light">
                   {product.discountedPrice < product.price ? (
                     <>
                       <span className="text-xl text-destructive line-through">
@@ -203,7 +203,7 @@ export default function SingleProduct() {
                   ) : (
                     <span>{product.price.toFixed(2)} NOK</span>
                   )}
-                </p>
+                </div>
 
                 <div className="relative flex flex-col items-center pb-14">
                   <Button
