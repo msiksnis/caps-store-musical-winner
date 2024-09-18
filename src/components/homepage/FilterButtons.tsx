@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { motion } from "framer-motion";
-import { SearchIcon } from "lucide-react";
 
 import { blurInVariants, cn, FILTER_OPTIONS } from "../../lib/utils";
 import { FilterOption } from "../../lib/types";
 import Search from "../Search";
+import { Button } from "../Button";
 
 interface FilterButtonsProps {
   filter: string | null;
@@ -34,9 +34,10 @@ export default function FilterButtons({
     >
       <div className="flex gap-2 md:gap-4 xl:gap-6">
         {/* All Products Button */}
-        <button
+        <Button
+          variant="secondary"
           className={cn(
-            "group relative overflow-hidden rounded-full border border-primary px-6 py-2 text-primary shadow-sm hover:text-white md:px-10 md:py-2.5",
+            "h-fit border border-primary bg-card px-6 py-2 md:px-10 md:py-3",
             {
               "border-primary bg-primary text-white shadow-md hover:bg-primary":
                 !filter,
@@ -45,16 +46,16 @@ export default function FilterButtons({
           aria-label="Show all products"
           onClick={() => handleFilterChange(null)}
         >
-          <div className="absolute -left-2 top-1/2 -z-10 size-0 -translate-y-1/2 rounded-full bg-primary transition-all duration-300 ease-in-out group-hover:-left-1/2 group-hover:size-64" />
-          <span>All Products</span>
-        </button>
+          All Products
+        </Button>
 
         {/* Other Filters */}
         {FILTER_OPTIONS.map((option) => (
-          <button
+          <Button
             key={option}
+            variant="secondary"
             className={cn(
-              "group relative overflow-hidden rounded-full border border-primary px-6 py-2 text-primary shadow-sm hover:text-white md:px-10 md:py-2.5",
+              "h-fit border border-primary bg-card px-6 py-2 md:px-10 md:py-3",
               {
                 "border-primary bg-primary text-white shadow-md hover:bg-primary":
                   filter === option,
@@ -63,9 +64,8 @@ export default function FilterButtons({
             aria-label={`Filter by ${formatFilterLabel(option)}`}
             onClick={() => handleFilterChange(option)}
           >
-            <div className="absolute -left-2 top-1/2 -z-10 size-0 -translate-y-1/2 rounded-full bg-primary transition-all duration-300 ease-in-out group-hover:-left-1/2 group-hover:size-64" />
-            <span>{formatFilterLabel(option)}</span>
-          </button>
+            {formatFilterLabel(option)}
+          </Button>
         ))}
       </div>
 

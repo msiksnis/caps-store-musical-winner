@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircleIcon } from "lucide-react";
 
 import { cn } from "../../lib/utils";
+import { Button } from "../Button";
 
 interface FormProps {
   fullName: string;
@@ -160,10 +161,7 @@ export default function SupportForm() {
       </div>
 
       {/* Submit Button */}
-      <button
-        className="w-full rounded-xl bg-primary py-4 font-semibold text-background shadow-sm transition-colors duration-300 hover:bg-gray-800 disabled:opacity-50"
-        disabled={loading}
-      >
+      <Button size="full" rounded="xl" disabled={loading}>
         {loading ? (
           <div className="flex items-center justify-center">
             <LoaderCircleIcon className="mr-2 size-5 animate-spin" />
@@ -172,7 +170,7 @@ export default function SupportForm() {
         ) : (
           "Send Message"
         )}
-      </button>
+      </Button>
     </form>
   );
 }

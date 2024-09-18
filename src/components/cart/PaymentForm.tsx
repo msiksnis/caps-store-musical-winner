@@ -8,6 +8,7 @@ import { cn } from "../../lib/utils";
 import { useCartStore } from "../../stores/cartStore";
 import { useNavigate } from "@tanstack/react-router";
 import { ChevronsUpDownIcon, LoaderCircleIcon } from "lucide-react";
+import { Button } from "../Button";
 
 /**
  * Schema for form validation using Zod
@@ -323,11 +324,12 @@ export default function PaymentForm() {
             Total: {totalAmount} NOK
           </p>
 
-          <button
+          <Button
             type="submit"
             aria-label="Pay now"
+            rounded="lg"
             disabled={loading || !stripe || !elements}
-            className="rounded-lg bg-primary px-10 py-2.5 font-semibold text-white shadow-sm transition-all hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
+            className="h-fit px-10 py-2.5 text-white"
           >
             {loading ? (
               <div className="flex items-center gap-2">
@@ -337,7 +339,7 @@ export default function PaymentForm() {
             ) : (
               "Pay Now"
             )}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

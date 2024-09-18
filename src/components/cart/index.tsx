@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 import { useCartStore } from "../../stores/cartStore";
 import { Trash2Icon } from "lucide-react";
+import { Button } from "../Button";
 
 export default function CartPage() {
   const cartItems = useCartStore((state) => state.cartItems);
@@ -75,11 +76,10 @@ export default function CartPage() {
             </p>
           </div>
           <div className="flex justify-end pb-10 md:mt-10">
-            <Link
-              to="/checkout"
-              className="rounded-full bg-primary px-14 py-4 text-white transition-all duration-200 hover:bg-gray-800 md:px-20"
-            >
-              Checkout
+            <Link to="/checkout">
+              <Button size="wider" rounded="full" className="h-fit px-14 py-3">
+                Checkout
+              </Button>
             </Link>
           </div>
         </>

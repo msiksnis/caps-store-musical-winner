@@ -21,6 +21,7 @@ import RatingStars from "./RatingStars";
 import ErrorLoadingButton from "../ErrorLoadingButton";
 import WarrantyContent from "./WarrantyContent";
 import ShippingContent from "./ShippingContent";
+import { Button } from "../Button";
 import SupportContent from "./SupportContent";
 import Modal from "../Modal";
 import { blurInVariants } from "../../lib/utils";
@@ -191,7 +192,11 @@ export default function SingleProduct() {
                       <div className="flex items-center justify-between">
                         <span>{product.discountedPrice.toFixed(2)} NOK</span>
                         <span className="-mt-1 rounded-full bg-destructive px-4 py-1 text-xl text-card">
-                          Save {product.price - product.discountedPrice} NOK
+                          Save{" "}
+                          {Math.round(
+                            (product.price - product.discountedPrice) * 100,
+                          ) / 100}{" "}
+                          NOK
                         </span>
                       </div>
                     </>
@@ -201,46 +206,42 @@ export default function SingleProduct() {
                 </p>
 
                 <div className="relative flex flex-col items-center pb-14">
-                  <button
-                    aria-label="Add product to cart"
+                  <Button
                     onClick={handleAddToCart}
+                    size="full"
+                    rounded="full"
                     disabled={quantityInCart > 0}
-                    className="w-full rounded-full bg-primary py-4 font-semibold text-background shadow-sm transition-all duration-300 hover:bg-gray-800 hover:shadow-lg disabled:cursor-default disabled:bg-gray-500 disabled:hover:shadow-sm"
                   >
                     {quantityInCart > 0 ? "Added to Cart" : "Add to Cart"}
-                  </button>
-
+                  </Button>
                   {quantityInCart > 0 && (
-                    <div className="absolute bottom-4 flex space-x-4">
-                      <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        transition={{ duration: 0.1, delay: 0.3 }}
-                        variants={blurInVariants}
-                        className=""
-                      >
-                        <Link
-                          to="/cart"
-                          className="rounded-full bg-yellow-300 px-4 pb-0.5 pt-1 text-primary transition-all duration-200 hover:bg-yellow-400"
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ duration: 0.1, delay: 0.3 }}
+                      variants={blurInVariants}
+                      className="absolute bottom-3.5 flex space-x-4"
+                    >
+                      <Link to="/cart">
+                        <Button
+                          rounded="full"
+                          variant="ghost"
+                          className="h-fit bg-yellow-300 px-4 pb-0.5 pt-1 font-normal text-primary transition-all duration-200 hover:bg-yellow-400"
                         >
                           View Cart
-                        </Link>
-                      </motion.div>
-                      <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        transition={{ duration: 0.1, delay: 0.3 }}
-                        variants={blurInVariants}
-                        className=""
-                      >
-                        <Link
-                          to="/checkout"
-                          className="rounded-full bg-yellow-300 px-4 pb-0.5 pt-1 text-primary transition-all duration-200 hover:bg-yellow-400"
+                        </Button>
+                      </Link>
+
+                      <Link to="/checkout">
+                        <Button
+                          rounded="full"
+                          variant="ghost"
+                          className="h-fit bg-yellow-300 px-4 pb-0.5 pt-1 font-normal text-primary transition-all duration-200 hover:bg-yellow-400"
                         >
                           Checkout
-                        </Link>
-                      </motion.div>
-                    </div>
+                        </Button>
+                      </Link>
+                    </motion.div>
                   )}
                 </div>
                 <div className="text-center font-extralight text-stone-600">
