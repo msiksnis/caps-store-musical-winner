@@ -56,12 +56,6 @@ export default function Footer() {
                 <Link to="/" className="block py-2 text-muted-foreground">
                   Home
                 </Link>
-                <Link
-                  to="/about"
-                  className="block whitespace-nowrap py-2 text-muted-foreground"
-                >
-                  About Us
-                </Link>
                 <button
                   onClick={() => navigate({ search: { filter: "sale" } })}
                   className="block py-2 text-muted-foreground"
@@ -73,9 +67,6 @@ export default function Footer() {
             <div className="">
               <h3 className="text-xl">Support</h3>
               <div className="py-4">
-                <Link to="/faq" className="block py-2 text-muted-foreground">
-                  FAQ
-                </Link>
                 <Link
                   to="/contact"
                   className="block py-2 text-muted-foreground"
