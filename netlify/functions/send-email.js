@@ -9,27 +9,128 @@ export const handler = async (event) => {
 
     const htmlContent = `
       <html>
-        <head>
-          <style>
-            body { font-family: Arial, sans-serif; }
-            .container { padding: 20px; }
-            .heading { font-size: 24px; font-weight: bold; }
-            .paragraph { font-size: 18px; margin-top: 20px; }
-            .message { background-color: #f2f3f3; padding: 15px; border-radius: 4px; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1 class="heading">Subject: ${subject}</h1>
-            <div class="message">
-              <p class="paragraph">${message}</p>
-            </div>
-            <p class="paragraph">Sent by: ${fullName}</p>
-            <p class="paragraph">Email: ${email}</p>
-          </div>
-        </body>
-      </html>
-    `;
+        <body
+            style="background-color: #f6f9fc;
+            font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
+            &quot;Helvetica Neue&quot;, Ubuntu, sans-serif;">
+              <table
+                align="center"
+                width="100%"
+                border="0"
+                cellpadding="0"
+                cellspacing="0"
+                role="presentation"
+                style="
+                  max-width: 37.5em;
+                  background-color: #ffffff;
+                  margin: 0 auto;
+                  padding: 20px 0 48px;
+                  margin-bottom: 64px;
+                ">
+                <tbody>
+                  <tr style="width: 100%">
+                    <td>
+                      <table
+                        align="center"
+                        width="100%"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                        role="presentation"
+                        style="padding: 0 48px"
+                      >
+                        <tbody>
+                          <tr>
+                            <td>
+                                <p
+                                style="
+                                  font-size: 18px;
+                                  line-height: 24px;
+                                  margin: 16px 0;
+                                  color: #3f4553;
+                                  text-align: left;
+                                "
+                              >
+                              From: ${fullName}
+                              </p>
+                              <p
+                                style="
+                                  font-size: 24px;
+                                  line-height: 24px;
+                                  margin: 16px 0;
+                                  color: #3f4553;
+                                  text-align: left;
+                                "
+                              >
+                                Subject: ${subject || "No Subject Provided"}
+                              </p>
+                              <hr
+                                style="
+                                  width: 100%;
+                                  border: none;
+                                  border-top: 1px solid #eaeaea;
+                                  border-color: #e6ebf1;
+                                  margin: 20px 0;
+                                "
+                              />
+                              <p
+                                style="
+                                  font-size: 22px;
+                                  line-height: 24px;
+                                  margin: 16px 0;
+                                  color: #42454d
+                                  text-align: left;
+                                "
+                              >
+                                ${message}
+                              </p
+                              <hr
+                                style="
+                                  width: 100%;
+                                  border: none;
+                                  border-top: 1px solid #eaeaea;
+                                  border-color: #e6ebf1;
+                                  margin: 20px 0;
+                                "
+                              />
+                              </p>      
+                              <span>Email: 
+                                <a
+                                  href=mailto:${email}
+                                  style="color: #556cd6; text-decoration: none"
+                                  target="_blank"
+                                >${email}</a>
+                              </span>
+                              <hr
+                                style="
+                                  width: 100%;
+                                  border: none;
+                                  border-top: 1px solid #eaeaea;
+                                  border-color: #e6ebf1;
+                                  margin: 20px 0;
+                                "
+                              />
+                              <p
+                                style="
+                                  font-size: 12px;
+                                  line-height: 16px;
+                                  margin: 16px 0;
+                                  color: #8898aa;
+                                "
+                              >
+                                This email was sent from Cap&apos;s Store website.
+                              </p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </body>
+          </html>
+        `;
 
     // Sends email using Resend API
     const data = await resend.emails.send({
