@@ -28,7 +28,7 @@ export default function FilterButtons({
     <motion.div
       initial="hidden"
       animate="visible"
-      transition={{ duration: 0.5, delay: 0.1 }}
+      transition={{ duration: 0.5, delay: 0.3 }}
       variants={blurInVariants}
       className="flex flex-col justify-between pb-2 pt-2 sm:flex-row md:mt-6"
     >

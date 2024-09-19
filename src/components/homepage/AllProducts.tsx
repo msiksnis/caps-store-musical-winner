@@ -102,7 +102,7 @@ export default function AllProducts({ searchTerm }: AllProductsProps) {
     <motion.div
       initial="hidden"
       animate="visible"
-      transition={{ duration: 0.3, delay: 0.3 }}
+      transition={{ duration: 0.5, delay: 0.35 }}
       variants={blurInVariants}
       className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4 md:gap-6 xl:grid-cols-3 xl:gap-8"
     >

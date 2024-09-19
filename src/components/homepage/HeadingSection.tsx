@@ -13,7 +13,7 @@ export default function HeadingSection() {
       <motion.h2
         initial="hidden"
         animate="visible"
-        transition={{ duration: 0.5, delay: 0.1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
         variants={blurInVariants}
         className="text-pretty py-2 text-lg font-light leading-6 text-muted-foreground md:py-4 md:text-xl"
       >
