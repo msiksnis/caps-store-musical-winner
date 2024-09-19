@@ -11,12 +11,12 @@ export default function CartPage() {
 
   // Sets SEO properties for the Cart page
   useSEO({
-    title: "Cap's Store | Shopping Cart",
-    description: "Review the items in your cart at Cap's Store.",
-    keywords: "Cap's Store, Shopping Cart, Products, Checkout",
+    title: "Mr Cap's Store | Shopping Cart",
+    description: "Review the items in your cart at Mr Cap's Store.",
+    keywords: "Mr Cap's Store, Shopping Cart, Products, Checkout",
     currentPath: "/cart",
-    ogTitle: "Cap's Store | Shopping Cart",
-    ogDescription: "Review the items in your cart at Cap's Store.",
+    ogTitle: "Mr Cap's Store | Shopping Cart",
+    ogDescription: "Review the items in your cart at Mr Cap's Store.",
     ogImage: "/assets/logo.png",
   });
 

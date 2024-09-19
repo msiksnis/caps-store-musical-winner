@@ -99,14 +99,14 @@ export default function SingleProduct() {
 
   // Sets the page title and meta tags for the single product page
   useSEO({
-    title: `Cap's Store | ${product?.title || "Product"}`,
+    title: `Mr Cap's Store | ${product?.title || "Product"}`,
     description:
-      product?.description || "Check out this product at Cap's Store.",
-    keywords: `${product?.title}, caps, shopping, store`,
+      product?.description || "Check out this product at Mr Cap's Store.",
+    keywords: `${product?.title}, mr caps, shopping, store`,
     currentPath: `/product/${id}`,
-    ogTitle: product?.title || "Cap's Store Product",
+    ogTitle: product?.title || "Mr Cap's Store Product",
     ogDescription:
-      product?.description || "Check out this product at Cap's Store.",
+      product?.description || "Check out this product at Mr Cap's Store.",
     ogImage: product?.image?.url || "/assets/logo.png",
     ogUrl: window.location.href,
   });

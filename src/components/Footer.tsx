@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="flex flex-col justify-between py-2 md:flex-row md:items-center xl:flex-col xl:items-start xl:justify-start">
           <div className="p-4">
             <h1 className="text-2xl font-medium sm:text-3xl md:text-4xl">
-              Cap&apos;s Store
+              Mr Cap&apos;s Store
             </h1>
             <h2 className="max-w-64 text-balance py-4 font-light text-muted-foreground xl:border-b">
               Selling premium products, designed to elevate your everyday

@@ -42,7 +42,7 @@ const updateOGTag = (property: string, content: string) => {
 // SEO Hook to update document title and meta tags
 export const useSEO = ({
   title,
-  description = "Default description for Cap's Store",
+  description = "Default description for Mr Cap's Store",
   keywords = "default, keywords, for, seo",
   currentPath,
   ogTitle,
@@ -52,7 +52,7 @@ export const useSEO = ({
 }: UseSEOProps) => {
   useEffect(() => {
     // Sets the document title
-    document.title = title || "Cap's Store";
+    document.title = title || "Mr Cap's Store";
 
     // Sets meta description
     updateMetaTag("description", description);

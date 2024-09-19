@@ -39,14 +39,14 @@ export default function PaymentForm() {
 
   // Sets SEO properties for the Checkout page
   useSEO({
-    title: "Cap's Store | Checkout",
+    title: "Mr Cap's Store | Checkout",
     description:
-      "Complete your purchase at Cap's Store. Enter your details to finish the checkout process.",
-    keywords: "Cap's Store, Checkout, Online Shopping",
+      "Complete your purchase at Mr Cap's Store. Enter your details to finish the checkout process.",
+    keywords: "Mr Cap's Store, Checkout, Online Shopping",
     currentPath: "/checkout",
-    ogTitle: "Cap's Store | Checkout",
+    ogTitle: "Mr Cap's Store | Checkout",
     ogDescription:
-      "Complete your purchase at Cap's Store. Enter your details to finish the checkout process.",
+      "Complete your purchase at Mr Cap's Store. Enter your details to finish the checkout process.",
     ogImage: "/assets/logo.png",
     ogUrl: window.location.href,
   });

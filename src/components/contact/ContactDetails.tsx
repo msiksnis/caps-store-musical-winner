@@ -34,7 +34,7 @@ export default function ContactDetails() {
           Drop us a message
         </span>
         <span className="text-balance pt-2 text-lg font-light leading-6 text-gray-700">
-          We're always here to assist you at Cap&apos;s Store. Our customer
+          We're always here to assist you at Mr Cap&apos;s Store. Our customer
           support team is dedicated to addressing your inquiries.
         </span>
         <ContactForm />

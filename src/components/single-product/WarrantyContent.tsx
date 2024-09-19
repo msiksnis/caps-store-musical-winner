@@ -2,7 +2,7 @@ export default function WarrantyContent() {
   return (
     <div className="space-y-4 text-pretty pb-4 font-light md:pb-10">
       <p>
-        Cap&apos;s Store offers a two-year manufacturer warranty on all
+        Mr Cap&apos;s Store offers a two-year manufacturer warranty on all
         products. Refurbished products purchased from authorized retailers are
         covered by a one-year manufacturer warranty. If you believe your product
         is faulty and is within the warranty period, please fill out the form
@@ -14,7 +14,7 @@ export default function WarrantyContent() {
         days. If you are required to return your product prior to approval, you
         will receive an email with a prepaid return shipping label. Please do
         not mail your product to us without a prepaid return label provided by
-        Cap&apos;s Store as this will delay the claims process.
+        Mr Cap&apos;s Store as this will delay the claims process.
       </p>
       <p>
         If no further information is needed, you&apos;ll receive an approval

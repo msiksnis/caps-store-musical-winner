@@ -7,7 +7,7 @@ export default function HeadingSection() {
   return (
     <div className="mt-14 md:mt-32">
       <GradualSpacing
-        text="Cap's Store"
+        text="Mr Cap's Store"
         className="text-4xl font-medium tracking-[-0.1em] text-primary sm:text-[3.5rem] md:text-[4rem] md:leading-[5rem]"
       />
       <motion.h2

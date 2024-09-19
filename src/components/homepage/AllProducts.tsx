@@ -42,11 +42,11 @@ export default function AllProducts({ searchTerm }: AllProductsProps) {
 
   // SEO hook to update the page title and meta
   useSEO({
-    title: `Cap's Store ${filter ? ` | ${filter.replace("-", " ").toUpperCase()}` : ""}`,
+    title: `Mr Cap's Store ${filter ? ` | ${filter.replace("-", " ").toUpperCase()}` : ""}`,
     description: `Explore our ${filter ? filter.replace("-", " ") : ""} range of products. ${searchTerm ? `Search results for "${searchTerm}"` : ""}.`,
-    keywords: `caps, store, products, ${filter || "shopping"}, ${searchTerm || "all products"}`,
+    keywords: `mr caps, store, products, ${filter || "shopping"}, ${searchTerm || "all products"}`,
     currentPath: window.location.pathname,
-    ogTitle: `Cap's Store${filter ? ` | ${filter.replace("-", " ").toUpperCase()}` : ""}`,
+    ogTitle: `Mr Cap's Store${filter ? ` | ${filter.replace("-", " ").toUpperCase()}` : ""}`,
     ogDescription: `Discover our wide range of products in ${filter || "all categories"}.`,
     ogImage: "/assets/logo.png",
     ogUrl: window.location.href,

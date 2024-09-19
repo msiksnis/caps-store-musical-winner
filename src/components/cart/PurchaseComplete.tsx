@@ -3,14 +3,14 @@ import { useSEO } from "../../hooks/useSEO";
 
 export default function PurchaseComplete() {
   useSEO({
-    title: "Cap's Store | Thank You!",
+    title: "Mr Cap's Store | Thank You!",
     description:
-      "Thank you for your purchase from Cap's Store. Your payment was successful.",
-    keywords: "Cap's Store, Purchase Complete, Thank You, Online Shopping",
+      "Thank you for your purchase from Mr Cap's Store. Your payment was successful.",
+    keywords: "Mr Cap's Store, Purchase Complete, Thank You, Online Shopping",
     currentPath: "/purchase-complete",
-    ogTitle: "Cap's Store | Payment Successful",
+    ogTitle: "Mr Cap's Store | Payment Successful",
     ogDescription:
-      "Thank you for your purchase from Cap's Store. Your payment was successful.",
+      "Thank you for your purchase from Mr Cap's Store. Your payment was successful.",
     ogImage: "/assets/logo.png",
     ogUrl: window.location.href,
   });

@@ -118,7 +118,7 @@ export const handler = async (event) => {
                                   color: #8898aa;
                                 "
                               >
-                                This email was sent from Cap&apos;s Store website.
+                                This email was sent from Mr Cap&apos;s Store website.
                               </p>
                             </td>
                           </tr>
@@ -136,7 +136,7 @@ export const handler = async (event) => {
     const data = await resend.emails.send({
       from: `${fullName} <email@mail.devmarty.com>`,
       to: ["msiksnis@gmail.com"], // Recipient's email
-      subject: "A message through Cap's Store",
+      subject: "A message through Mr Cap's Store",
       html: htmlContent,
     });
 
