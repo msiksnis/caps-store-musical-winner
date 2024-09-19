@@ -34,38 +34,44 @@ export default function FilterButtons({
     >
       <div className="flex gap-2 md:gap-4 xl:gap-6">
         {/* All Products Button */}
-        <Button
-          variant="secondary"
-          className={cn(
-            "h-fit border border-primary bg-card px-6 py-2 md:px-10 md:py-3",
-            {
-              "border-primary bg-primary text-white shadow-md hover:bg-primary":
-                !filter,
-            },
-          )}
+
+        <button
+          className="group relative"
           aria-label="Show all products"
           onClick={() => handleFilterChange(null)}
         >
-          All Products
-        </Button>
+          <span
+            className={cn(
+              "relative z-10 block h-10 overflow-hidden rounded-full border border-primary bg-card px-14 text-primary transition-colors duration-300 ease-out group-hover:text-white md:h-12 md:px-20",
+              { "bg-primary text-white": !filter },
+            )}
+          >
+            <span className="ease absolute left-0 -ml-1 h-48 w-48 origin-top-right -translate-x-full translate-y-12 -rotate-90 bg-black transition-all duration-300 group-hover:-rotate-180"></span>
+            <span className="absolute inset-0 flex w-full items-center justify-center text-sm md:text-base">
+              All Products
+            </span>
+          </span>
+        </button>
 
         {/* Other Filters */}
         {FILTER_OPTIONS.map((option) => (
-          <Button
-            key={option}
-            variant="secondary"
-            className={cn(
-              "h-fit border border-primary bg-card px-6 py-2 md:px-10 md:py-3",
-              {
-                "border-primary bg-primary text-white shadow-md hover:bg-primary":
-                  filter === option,
-              },
-            )}
+          <button
+            className="group relative"
             aria-label={`Filter by ${formatFilterLabel(option)}`}
             onClick={() => handleFilterChange(option)}
           >
-            {formatFilterLabel(option)}
-          </Button>
+            <span
+              className={cn(
+                "relative z-10 block h-10 overflow-hidden rounded-full border border-primary bg-card px-12 text-primary transition-colors duration-300 ease-out group-hover:text-white md:h-12 md:px-20",
+                { "bg-primary text-white": filter === option },
+              )}
+            >
+              <span className="ease absolute left-0 -ml-1 h-48 w-48 origin-top-right -translate-x-full translate-y-12 -rotate-90 bg-black transition-all duration-300 group-hover:-rotate-180"></span>
+              <span className="absolute inset-0 flex w-full items-center justify-center text-sm md:text-base">
+                {formatFilterLabel(option)}
+              </span>
+            </span>
+          </button>
         ))}
       </div>
 
