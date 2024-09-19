@@ -268,18 +268,18 @@ export default function SingleProduct() {
                 </div>
               </div>
 
-              <div className="flex flex-col divide-y py-10 text-stone-600 lg:py-0">
+              <div className="flex flex-col divide-y divide-muted py-10 text-stone-600 lg:py-0">
                 {infoItems.map((item) => (
                   <button
                     key={item.label}
-                    className="flex w-full items-center justify-between py-6 transition-all duration-200 hover:text-primary"
+                    className="flex items-center justify-between py-6 transition-all duration-200 first:rounded-t-xl last:rounded-b-xl hover:bg-muted hover:text-primary"
                     onClick={() => openModal(item)}
                   >
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 pl-2">
                       <item.icon className="h-6 w-6" />
                       <p>{item.label}</p>
                     </div>
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="mr-2 h-5 w-5" />
                   </button>
                 ))}
               </div>
