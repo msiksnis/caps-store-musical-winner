@@ -26,7 +26,7 @@ export default function CartPage() {
   );
 
   return (
-    <div className="mx-auto mt-14 min-h-[50vh] max-w-5xl px-4 md:mt-32">
+    <div className="mx-auto mt-14 min-h-[60vh] max-w-5xl px-4 md:mt-32 md:px-10 xl:max-w-7xl">
       <h1 className="mb-6 text-3xl">Your Shopping Cart</h1>
       {cartItems.length === 0 ? (
         <p className="">
