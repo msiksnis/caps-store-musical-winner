@@ -46,7 +46,7 @@ export default function FilterButtons({
               { "bg-primary text-white": !filter },
             )}
           >
-            <span className="ease absolute left-0 -ml-1 h-48 w-48 origin-top-right -translate-x-full translate-y-12 -rotate-90 bg-black transition-all duration-300 group-hover:-rotate-180"></span>
+            <span className="ease absolute left-0 -ml-1 h-48 w-48 origin-top-right -translate-x-full translate-y-12 -rotate-90 bg-primary transition-all duration-300 group-hover:-rotate-180"></span>
             <span className="absolute inset-0 flex w-full items-center justify-center text-sm md:text-base">
               All Products
             </span>
@@ -66,7 +66,7 @@ export default function FilterButtons({
                 { "bg-primary text-white": filter === option },
               )}
             >
-              <span className="ease absolute left-0 -ml-1 h-48 w-48 origin-top-right -translate-x-full translate-y-12 -rotate-90 bg-black transition-all duration-300 group-hover:-rotate-180"></span>
+              <span className="ease absolute left-0 -ml-1 h-48 w-48 origin-top-right -translate-x-full translate-y-12 -rotate-90 bg-primary transition-all duration-300 group-hover:-rotate-180"></span>
               <span className="absolute inset-0 flex w-full items-center justify-center text-sm md:text-base">
                 {formatFilterLabel(option)}
               </span>

@@ -206,7 +206,7 @@ export default function SingleProduct() {
                       </span>
                       <div className="flex items-center justify-between">
                         <span>{product.discountedPrice.toFixed(2)} NOK</span>
-                        <span className="-mt-1 rounded-full bg-destructive px-4 py-1 text-xl text-card">
+                        <span className="-mt-1 rounded-full bg-gradient-to-br from-red-500/80 to-red-600 px-4 py-1 text-xl text-card">
                           Save{" "}
                           {Math.round(
                             (product.price - product.discountedPrice) * 100,
@@ -241,7 +241,7 @@ export default function SingleProduct() {
                         <Button
                           rounded="full"
                           variant="ghost"
-                          className="h-fit bg-yellow-300 px-4 pb-0.5 pt-1 font-normal text-primary transition-all duration-200 hover:bg-yellow-400"
+                          className="h-fit bg-yellow-300 px-4 pb-0.5 pt-1 font-normal text-primary shadow-sm transition-all duration-200 hover:bg-yellow-400"
                         >
                           View Cart
                         </Button>
@@ -251,7 +251,7 @@ export default function SingleProduct() {
                         <Button
                           rounded="full"
                           variant="ghost"
-                          className="h-fit bg-yellow-300 px-4 pb-0.5 pt-1 font-normal text-primary transition-all duration-200 hover:bg-yellow-400"
+                          className="h-fit bg-yellow-300 px-4 pb-0.5 pt-1 font-normal text-primary shadow-sm transition-all duration-200 hover:bg-yellow-400"
                         >
                           Checkout
                         </Button>
