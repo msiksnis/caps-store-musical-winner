@@ -51,9 +51,9 @@ export default function DiscountTag({
     >
       <div className="relative">
         <img src="/assets/discount_tag.svg" alt="discount tag" />
-        <div className="absolute right-1/2 top-12 translate-x-1/2 -rotate-6 text-white">
+        <div className="absolute right-1/2 top-12 translate-x-1/2 -rotate-6">
           <div className="flex flex-col whitespace-nowrap text-3xl">
-            <div className="flex items-center">
+            <div className="flex items-center text-white">
               -
               <NumberTicker value={displayValue} />
               {displayType === "percentage" ? "%" : ` ${currency}`}
