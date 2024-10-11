@@ -6,6 +6,8 @@
 
 "Mr Cap's Store" is an e-commerce website selling unique products
 
+[Live Demo](https://caps-store.netlify.app)
+
 ## Features
 
 - **Homepage:** List of all products, option to filter by 'All Products', 'Top Rated', or 'Sale'. Homepage also has a lookahead search functionality.
