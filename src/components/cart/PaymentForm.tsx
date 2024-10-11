@@ -4,10 +4,11 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
+import { ChevronsUpDownIcon, InfoIcon, LoaderCircleIcon } from "lucide-react";
+
 import { cn } from "../../lib/utils";
 import { useCartStore } from "../../stores/cartStore";
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronsUpDownIcon, LoaderCircleIcon } from "lucide-react";
 import { Button } from "../Button";
 import { useSEO } from "../../hooks/useSEO";
 
@@ -307,11 +308,14 @@ export default function PaymentForm() {
 
           {/* Card Element */}
           <div className="relative flex-1">
-            <div className="mb-2">
-              <strong>Use Stripe test card details!</strong>
-              <p className="">Card number: 4242 4242 4242 4242</p>
-              <p className="">Expiry: Any future date</p>
-              <p className="">CVC: Any 3 digits</p>
+            <div className="flex items-start gap-2">
+              <InfoIcon className="mt-0.5 size-5 text-gray-500" />
+              <div className="mb-2">
+                <strong>Use Stripe test card details!</strong>
+                <p className="">Card number: 4242 4242 4242 4242</p>
+                <p className="">Expiry: Any future date</p>
+                <p className="">CVC: Any 3 digits</p>
+              </div>
             </div>
             <div className="rounded-lg border p-3">
               <CardElement

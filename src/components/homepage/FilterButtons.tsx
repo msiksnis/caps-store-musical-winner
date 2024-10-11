@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { blurInVariants, cn, FILTER_OPTIONS } from "../../lib/utils";
 import { FilterOption } from "../../lib/types";
 import Search from "../Search";
-import { Button } from "../Button";
 
 interface FilterButtonsProps {
   filter: string | null;
@@ -13,13 +12,29 @@ interface FilterButtonsProps {
   setSearchTerm: (term: string) => void;
 }
 
+/**
+ * FilterButtons component that renders a list of filter options and a search input.
+ *
+ * @param {FilterButtonsProps} props - The props for the FilterButtons component.
+ * @param {string | null} props.filter - The currently selected filter.
+ * @param {(newFilter: FilterOption | null) => void} props.handleFilterChange - Function to handle filter changes.
+ * @param {string} props.searchTerm - The current search term input value.
+ * @param {(term: string) => void} props.setSearchTerm - Function to set the search term input value.
+ * @returns {JSX.Element} The rendered FilterButtons component.
+ */
 export default function FilterButtons({
   filter,
   handleFilterChange,
   searchTerm,
   setSearchTerm,
 }: FilterButtonsProps) {
-  // Utility function to format filter options
+  /**
+   * Utility function to format the filter label by replacing dashes with spaces
+   * and capitalizing the first letter of each word.
+   *
+   * @param {string} option - The filter option string.
+   * @returns {string} - The formatted filter label.
+   */
   const formatFilterLabel = useCallback((option: string) => {
     return option.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase());
   }, []);
@@ -34,7 +49,6 @@ export default function FilterButtons({
     >
       <div className="flex gap-2 md:gap-4 xl:gap-6">
         {/* All Products Button */}
-
         <button
           className="group relative"
           aria-label="Show all products"
@@ -56,6 +70,7 @@ export default function FilterButtons({
         {/* Other Filters */}
         {FILTER_OPTIONS.map((option) => (
           <button
+            key={option}
             className="group relative"
             aria-label={`Filter by ${formatFilterLabel(option)}`}
             onClick={() => handleFilterChange(option)}

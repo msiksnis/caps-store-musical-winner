@@ -74,7 +74,6 @@ interface ModalData {
 export default function SingleProduct() {
   const { id } = useParams({ from: "/product/$id" });
 
-  const [isAnimating, setIsAnimating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<ModalData | null>(null);
 
@@ -154,18 +153,8 @@ export default function SingleProduct() {
     setModalData(null);
   };
 
-  // Start the discount tag animation when the mouse enters the image area
-  const handleMouseEnter = () => {
-    setIsAnimating(true);
-  };
-
-  // Reset the animation state when the animation ends
-  const handleAnimationEnd = () => {
-    setIsAnimating(false);
-  };
-
   return (
-    <div className="mx-auto mt-20 px-4 sm:max-w-4xl md:mt-40 md:max-w-5xl md:px-10 xl:max-w-7xl">
+    <main className="mx-auto mt-20 px-4 sm:max-w-4xl md:mt-40 md:max-w-5xl md:px-10 xl:max-w-7xl">
       {product && (
         <motion.div
           initial="hidden"
@@ -174,10 +163,7 @@ export default function SingleProduct() {
           variants={blurInVariants}
         >
           <div className="flex flex-col lg:flex-row">
-            <div
-              className="relative w-full lg:w-7/12"
-              onMouseEnter={handleMouseEnter}
-            >
+            <div className="relative w-full lg:w-7/12">
               <img
                 src={product.image.url}
                 alt={product.image.alt}
@@ -352,6 +338,6 @@ export default function SingleProduct() {
           {modalData.modalContent}
         </Modal>
       )}
-    </div>
+    </main>
   );
 }
